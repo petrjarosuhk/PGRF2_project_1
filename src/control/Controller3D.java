@@ -8,14 +8,17 @@ import renderer.TriangleRasterizer;
 import transforms.*;
 import view.Panel;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class Controller3D implements Controller {
 
     private final Panel panel;
-
+    private boolean cubeEdit = false;
+    private boolean triangleEdit = false;
     private int width, height;
+
     private Camera camera = new Camera()
             .withPosition(new Vec3D(-0.36,-0.73,1.82))
             .withAzimuth(-4.58)
@@ -71,6 +74,7 @@ public class Controller3D implements Controller {
             @Override
             public void mousePressed(MouseEvent e) {
                 oldPoint= new Point2D(e.getX(),e.getY());
+
             }
         });
 
@@ -95,6 +99,7 @@ public class Controller3D implements Controller {
             public void mouseReleased(MouseEvent e) {
             }
         });
+
         panel.requestFocus();
         panel.requestFocusInWindow();
         panel.addKeyListener(new KeyAdapter() {
@@ -125,23 +130,35 @@ public class Controller3D implements Controller {
                         break;
                     case KeyEvent.VK_I:
                         projection = new Mat4PerspRH(Math.PI / 3,
-                                panel.getHeight()/ (float) panel.getWidth(),
+                                panel.getHeight() / (float) panel.getWidth(),
                                 0.1,
                                 30);
                         break;
                     case KeyEvent.VK_X:
-                        ar.setModelmatrix(ar.getModelMatrix().mul(new Mat4RotX(0.1)));
+                        if(cubeEdit == true) {
+                            cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotX(0.1)));
+                        }
                         break;
                     case KeyEvent.VK_Y:
-                        ar.setModelmatrix(ar.getModelMatrix().mul(new Mat4RotY(0.1)));
+                        if(cubeEdit == true) {
+                            cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotY(0.1)));
+                        }
                         break;
                     case KeyEvent.VK_Z:
-                        ar.setModelmatrix(ar.getModelMatrix().mul(new Mat4RotZ(0.1)));
+                        if(cubeEdit == true) {
+                            cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotZ(0.1)));
+                            //cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(1,0,0)));
+                        }
+                        break;
+                    case KeyEvent.VK_T:
+                        if(cubeEdit == true) {
+                            cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(1,0,0)));
+                        }
                         break;
                     case KeyEvent.VK_A:
                         modeCut++;
-                        if(modeCut==3)
-                            modeCut=0;
+                        if (modeCut == 3)
+                            modeCut = 0;
                         break;
                     case KeyEvent.VK_NUMPAD0:
                         shader = v -> {
@@ -163,22 +180,29 @@ public class Controller3D implements Controller {
                         shader = v -> {
                             return v.getColor();
                         };
-                        break;
+
                 }
                 triangleRasterizer = new TriangleRasterizer(zbufferVisibility,shader);
                 panel.clear();
+
+
                 redraw();
+
+
 
             }
         });
     }
 
+
     private void redraw() {
+
         width = panel.getRaster().getWidth();
         height = panel.getRaster().getHeight();
         Graphics g = panel.getRaster().getGraphics();
 
         g.setColor(Color.white);
+
 
         redraw3D();
         panel.repaint();
@@ -186,29 +210,41 @@ public class Controller3D implements Controller {
 
     private void redraw3D() {
 
-        triangleRasterizer.getzBuffer().getDbuffer().clear();//vyčistit si  buffer vždycky před každým kreslením
+        triangleRasterizer.getzBuffer().getDbuffer().clear();
 
         triangleRasterizer.setModeCut(modeCut);
         renderer = new Renderer(triangleRasterizer);
         renderer.setProjectionMatrix(projection);
         renderer.setView(camera.getViewMatrix());
 
-        renderer.render(ar);
+
         renderer.render(arrowZ);
         renderer.render(arrowY);
         renderer.render(axesX);
-        renderer.render(cube);
-        renderer.render(cube2);
+        panel.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyChar() == 'c'){
+                 cubeEdit = true;
+
+                }
+
+            }
+        });
 
 
-       /*triangleRasterizer.rasterize(new Vertex(0.3,0.8,-0.1,new Col(0x00ff00)),
-                new Vertex(-0.2,0.2,-0.5,new Col(0x00ffff)),
-                new Vertex(0.6,-0.9,-0.9,new Col(0xffff00)));
+          renderer.render(ar);
+          renderer.render(cube2);
+          panel.repaint();
+          renderer.render(cube);
 
-        triangleRasterizer.rasterize(new Vertex(-0.96,0.2,-0.5,new Col(0x00ff00)),
-                new Vertex(0.3,-0.2,-0.1,new Col(0xff0000)),
-                new Vertex(0.66,0.5,-0.5,new Col(0x0000ff)));*/
+
+
+
+
     }
+
+
 
 
 }
