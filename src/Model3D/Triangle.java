@@ -21,7 +21,7 @@ public class Triangle extends Solid{
         vertexBuffer.add(new Vertex(1,0,0.2,new Col(1.,0.,0)));//v4
         vertexBuffer.add(new Vertex(0.8,-0.2,0.2,new Col(1,0,0.)));//v5
 
-        getPartList().add(new Part(TopologyType.TRIANGLE,0,1));
+        getPartList().add(new Part(TopologyType.TRIANGLE, 0,1));
     }
 
 }

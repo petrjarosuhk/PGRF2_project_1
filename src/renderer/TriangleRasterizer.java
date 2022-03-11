@@ -1,13 +1,16 @@
 package renderer;
 
+import Model3D.Cube;
 import Model3D.Shader;
+import control.Controller3D;
 import model.Vertex;
 import raster.ZbufferVisibility;
+import transforms.Col;
 import transforms.Point3D;
 import transforms.Vec3D;
 import java.util.Optional;
 
-public class TriangleRasterizer {
+public class TriangleRasterizer  {
 
     private final ZbufferVisibility zBuffer;
 
@@ -54,7 +57,7 @@ public void rasterize(Vertex v1){
         trivialLine(p1, p2);
     }
 
-    private void trivialLine(Vertex p1, Vertex p2) {
+    public void trivialLine(Vertex p1, Vertex p2) {
         double dx = p2.getPosition().getX() - p1.getPosition().getX();
         double dy = p2.getPosition().getY() - p1.getPosition().getY();
         Vertex temp;
@@ -83,7 +86,29 @@ public void rasterize(Vertex v1){
             }
 
         }
+
+    }  public void rasterize3(Vertex p1, Vertex p2, Vertex p3) {
+
+
+        if (fastClip(p1.getPosition()) || fastClip(p2.getPosition()));
+
+
+        Optional<Vertex> v1Dehomog = p1.dehomog();
+        Optional<Vertex> v2Dehomog = p2.dehomog();
+        Optional<Vertex> v3Dehomog = p3.dehomog();
+        if (v1Dehomog.isEmpty() || v2Dehomog.isEmpty()  || v2Dehomog.isEmpty())
+            return;
+        Vec3D newP1 = transform(v1Dehomog.get().getPosition());
+        Vec3D newP2 = transform(v2Dehomog.get().getPosition());
+        Vec3D newP3 = transform(v3Dehomog.get().getPosition());
+        p1.setPosition(newP1);
+        p2.setPosition(newP2);
+        p3.setPosition(newP3);
+        trivialLine(p1,p2);
+        trivialLine(p1, p3);
+        trivialLine(p2,p3);
     }
+
 
     public void rasterize(Vertex p1, Vertex p2, Vertex p3) {
 
@@ -142,11 +167,12 @@ public void rasterize(Vertex v1){
             p2=temp;
         }
         for (int y = (int) p1.getPosition().getY()+1; y < p2.getPosition().getY(); y++) {
-            simpleScanlineTriangle(p1, p2, p3, y);
+           simpleScanlineTriangle(p1, p2, p3, y);
         }
         for (int y = (int) p2.getPosition().getY()+1; y < p3.getPosition().getY(); y++) {
             simpleScanlineTriangle(p3, p2, p1, y);
         }
+
     }
     private void simpleScanlineTriangle(Vertex a, Vertex b, Vertex c, int y) {
         double s1 = (y - a.getPosition().getY()) / (b.getPosition().getY() - a.getPosition().getY());
@@ -163,6 +189,7 @@ public void rasterize(Vertex v1){
             Vertex point = v12.mul(1 - t).add(v13.mul(t));
             zBuffer.drawPixelWithTest(x, y, point.getPosition().getZ(), shader.shade(point));
         }
+
     }
 
     private Vec3D transform(Point3D p) {
@@ -181,4 +208,6 @@ public void rasterize(Vertex v1){
         if (p.getW() < p.getY() || p.getY() < -p.getW()) return true;
         return p.getW() < p.getZ() || p.getZ() < 0;// perspektivní, u orth by to byla 1
     }
+
+
 }

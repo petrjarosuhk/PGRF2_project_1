@@ -12,12 +12,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import static model.TopologyType.*;
+
 public class Controller3D implements Controller {
 
     private final Panel panel;
     private boolean cubeEdit = false;
     private boolean triangleEdit = false;
     private int width, height;
+
 
     private Camera camera = new Camera()
             .withPosition(new Vec3D(-0.36,-0.73,1.82))
@@ -35,10 +38,11 @@ public class Controller3D implements Controller {
     AxesY arrowY = new AxesY();
     AxesX axesX = new AxesX();
     AxesZ arrowZ = new AxesZ();
-    Triangle cube = new Triangle();
+    Triangle triangle = new Triangle();
     Cube cube2 = new Cube();
-
+   PiercedTriangle piercedTriangle= new PiercedTriangle();
     Shader shader;
+
 
     public Controller3D(Panel panel) {
         this.panel = panel;
@@ -61,7 +65,8 @@ public class Controller3D implements Controller {
             return v.getColor();
         };
 
-        triangleRasterizer = new TriangleRasterizer(zbufferVisibility, shader);
+
+       triangleRasterizer = new TriangleRasterizer(zbufferVisibility, shader);
 
 
 
@@ -135,26 +140,74 @@ public class Controller3D implements Controller {
                                 30);
                         break;
                     case KeyEvent.VK_X:
-                        if(cubeEdit == true) {
+                        if (cubeEdit == true) {
                             cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotX(0.1)));
+                        }
+                        if (triangleEdit == true) {
+                            triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotX(0.1)));
                         }
                         break;
                     case KeyEvent.VK_Y:
-                        if(cubeEdit == true) {
+                        if (cubeEdit == true) {
                             cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotY(0.1)));
+                        }
+                        if (triangleEdit == true) {
+                            triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotY(0.1)));
                         }
                         break;
                     case KeyEvent.VK_Z:
-                        if(cubeEdit == true) {
+                        if (cubeEdit == true) {
                             cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotZ(0.1)));
-                            //cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(1,0,0)));
+                        }
+                        if (triangleEdit == true) {
+                            triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotZ(0.1)));
                         }
                         break;
                     case KeyEvent.VK_T:
-                        if(cubeEdit == true) {
-                            cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(1,0,0)));
+                        if (cubeEdit == true) {
+                            cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(0.1, 0, 0)));
                         }
                         break;
+                    case KeyEvent.VK_N:
+                                 {
+                        if (cubeEdit == true){
+                            int i = 0;
+                        for (i = 0; i < cube2.getPartList().size(); i++) {
+                            cube2.getPartList().get(i).setTopology(TRIANGLE_WIRE);
+                                    }
+                            }
+                            if(triangleEdit == true) {
+                                int i = 0;
+                                for (i = 0; i < triangle.getPartList().size(); i++) {
+                                    triangle.getPartList().get(i).setTopology(TRIANGLE_WIRE);
+                                }
+                            }
+                        }
+                        break;
+                    case KeyEvent.VK_SHIFT:
+                  cubeEdit = false;
+                  triangleEdit = false;
+                  redraw();
+                    break;
+                    case KeyEvent.VK_L:
+                    {
+                        if (cubeEdit == true){
+                            int i = 0;
+                            for (i = 0; i < cube2.getPartList().size(); i++) {
+                                cube2.getPartList().get(i).setTopology(TRIANGLE);
+                            }
+                        }
+                        if(triangleEdit == true) {
+                            int i = 0;
+                            for (i = 0; i < triangle.getPartList().size(); i++) {
+                                triangle.getPartList().get(i).setTopology(TRIANGLE);
+                            }
+                        }
+                    }
+                    triangleEdit = false;
+                    cubeEdit=false;
+                    redraw();
+                    break;
                     case KeyEvent.VK_A:
                         modeCut++;
                         if (modeCut == 3)
@@ -182,6 +235,7 @@ public class Controller3D implements Controller {
                         };
 
                 }
+
                 triangleRasterizer = new TriangleRasterizer(zbufferVisibility,shader);
                 panel.clear();
 
@@ -229,18 +283,19 @@ public class Controller3D implements Controller {
 
                 }
 
+                if(e.getKeyChar() == 'k'){
+                    triangleEdit = true;
+
+                }
+
             }
         });
 
 
-          renderer.render(ar);
-          renderer.render(cube2);
-          panel.repaint();
-          renderer.render(cube);
-
-
-
-
+        renderer.render(triangle);
+        renderer.render(cube2);
+//        renderer.render(piercedTriangle);
+//        renderer.render(cube);
 
     }
 

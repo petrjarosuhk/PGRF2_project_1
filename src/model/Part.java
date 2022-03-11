@@ -11,6 +11,11 @@ public class Part {
         this.count = count;
     }
 
+    public Part( int indexStart, int count) {
+        this.indexStart = indexStart;
+        this.count = count;
+    }
+
     public TopologyType getType() {
         return type;
     }
@@ -21,5 +26,9 @@ public class Part {
 
     public int getCount() {
         return count;
+    }
+
+    public void setTopology(TopologyType type){
+        this.type = type;
     }
 }

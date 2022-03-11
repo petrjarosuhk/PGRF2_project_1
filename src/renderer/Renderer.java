@@ -43,6 +43,29 @@ public class Renderer {
                         start += 2;
                     }
                     break;
+                case TRIANGLE_WIRE:
+                    start = part.getIndexStart();
+                    for (int i = 0; i < part.getCount(); i++) {
+                        int indexV1 = start;
+                        int indexV2 = start + 1;
+                        int indexV3 = start + 2;
+                        Vertex v1 = solid.getVertexBuffer().get(solid.getIndexBuffer().get(indexV1));
+                        Vertex v2 = solid.getVertexBuffer().get(solid.getIndexBuffer().get(indexV2));
+                        Vertex v3 = solid.getVertexBuffer().get(solid.getIndexBuffer().get(indexV3));
+
+
+                        v1 = v1.mul(trans);
+                        v2 = v2.mul(trans);
+                        v3 = v3.mul(trans);
+
+                        triangleRasterizer.rasterize3(
+                                    new Vertex(v1.mul(1 / v1.getOne())),
+                                    new Vertex(v2.mul(1 / v2.getOne())),
+                                    new Vertex(v3.mul(1 / v3.getOne()))
+                        );
+                        start += 3;
+                    }
+                    break;
                 case TRIANGLE:
                     start = part.getIndexStart();
                     for (int i = 0; i < part.getCount(); i++) {
@@ -59,9 +82,9 @@ public class Renderer {
                         v3 = v3.mul(trans);
 
                         triangleRasterizer.rasterize(
-                                    new Vertex(v1.mul(1 / v1.getOne())),
-                                    new Vertex(v2.mul(1 / v2.getOne())),
-                                    new Vertex(v3.mul(1 / v3.getOne()))
+                                new Vertex(v1.mul(1 / v1.getOne())),
+                                new Vertex(v2.mul(1 / v2.getOne())),
+                                new Vertex(v3.mul(1 / v3.getOne()))
                         );
                         start += 3;
                     }
