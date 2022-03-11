@@ -19,6 +19,7 @@ public class Controller3D implements Controller {
     private final Panel panel;
     private boolean cubeEdit = false;
     private boolean triangleEdit = false;
+    private boolean pyramidEdit = false;
     private int width, height;
 
 
@@ -40,7 +41,7 @@ public class Controller3D implements Controller {
     AxesZ arrowZ = new AxesZ();
     Triangle triangle = new Triangle();
     Cube cube2 = new Cube();
-   PiercedTriangle piercedTriangle= new PiercedTriangle();
+   Pyramid pyramid = new Pyramid();
     Shader shader;
 
 
@@ -146,6 +147,9 @@ public class Controller3D implements Controller {
                         if (triangleEdit == true) {
                             triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotX(0.1)));
                         }
+                        if (pyramidEdit == true) {
+                            pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4RotX(0.1)));
+                        }
                         break;
                     case KeyEvent.VK_Y:
                         if (cubeEdit == true) {
@@ -154,6 +158,9 @@ public class Controller3D implements Controller {
                         if (triangleEdit == true) {
                             triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotY(0.1)));
                         }
+                        if (pyramidEdit == true) {
+                            pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4RotY(0.1)));
+                        }
                         break;
                     case KeyEvent.VK_Z:
                         if (cubeEdit == true) {
@@ -161,6 +168,9 @@ public class Controller3D implements Controller {
                         }
                         if (triangleEdit == true) {
                             triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotZ(0.1)));
+                        }
+                        if (pyramidEdit == true) {
+                            pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4RotZ(0.1)));
                         }
                         break;
                     case KeyEvent.VK_T:
@@ -182,11 +192,18 @@ public class Controller3D implements Controller {
                                     triangle.getPartList().get(i).setTopology(TRIANGLE_WIRE);
                                 }
                             }
+                            if(pyramidEdit == true) {
+                                int i = 0;
+                                for (i = 0; i < pyramid.getPartList().size(); i++) {
+                                    pyramid.getPartList().get(i).setTopology(TRIANGLE_WIRE);
+                                         }
+                                     }
                         }
                         break;
                     case KeyEvent.VK_SHIFT:
                   cubeEdit = false;
                   triangleEdit = false;
+                  pyramidEdit = false;
                   redraw();
                     break;
                     case KeyEvent.VK_L:
@@ -203,7 +220,14 @@ public class Controller3D implements Controller {
                                 triangle.getPartList().get(i).setTopology(TRIANGLE);
                             }
                         }
+                        if(pyramidEdit == true) {
+                            int i = 0;
+                            for (i = 0; i < pyramid.getPartList().size(); i++) {
+                                pyramid.getPartList().get(i).setTopology(TRIANGLE);
+                            }
+                        }
                     }
+
                     triangleEdit = false;
                     cubeEdit=false;
                     redraw();
@@ -280,22 +304,30 @@ public class Controller3D implements Controller {
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyChar() == 'c'){
                  cubeEdit = true;
-
+                 pyramidEdit = false;
+                 triangleEdit = false;
                 }
 
                 if(e.getKeyChar() == 'k'){
                     triangleEdit = true;
+                    pyramidEdit = false;
+                    cubeEdit = false;
+                }
+                if(e.getKeyChar() == 'h'){
+                    pyramidEdit = true;
+                    triangleEdit = false;
+                    cubeEdit = false;
 
                 }
 
             }
         });
 
-
+       renderer.render(pyramid);
         renderer.render(triangle);
-        renderer.render(cube2);
-//        renderer.render(piercedTriangle);
-//        renderer.render(cube);
+        //
+       renderer.render(cube2);
+        //renderer.render(cube);
 
     }
 
