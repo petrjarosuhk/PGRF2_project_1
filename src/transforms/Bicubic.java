@@ -14,31 +14,33 @@ public class Bicubic {
 
 	/**
 	 * Create bicubic using 4x4 individual control points
-	 * 
-	 * @param baseMat
+	 *  @param baseMat
 	 *            base matrix, for instance Cubic.BEZIER
-	 * @param p11
-	 * @param p12
-	 * @param p13
-	 * @param p14
-	 * @param p21
-	 * @param p22
-	 * @param p23
-	 * @param p24
-	 * @param p31
-	 * @param p32
-	 * @param p33
-	 * @param p34
-	 * @param p41
-	 * @param p42
-	 * @param p43
-	 * @param p44
-	 *            control points
-	 */
-	public Bicubic(final Mat4 baseMat, final Point3D p11, final Point3D p12, final Point3D p13, final Point3D p14,
-			final Point3D p21, final Point3D p22, final Point3D p23, final Point3D p24, final Point3D p31,
-			final Point3D p32, final Point3D p33, final Point3D p34, final Point3D p41, final Point3D p42,
-			final Point3D p43, final Point3D p44) {
+	 * @param d1
+     * @param point3D1
+     * @param d
+     * @param point3D
+     * @param p11
+     * @param p12
+     * @param p13
+     * @param p14
+     * @param p21
+     * @param p22
+     * @param p23
+     * @param p24
+     * @param p31
+     * @param p32
+     * @param p33
+     * @param p34
+     * @param p41
+     * @param p42
+     * @param p43
+     * @param p44
+     */
+	public Bicubic(final Mat4 baseMat, Point3D d1, Point3D point3D1, Point3D d, Point3D point3D, final Point3D p11, final Point3D p12, final Point3D p13, final Point3D p14,
+                   final Point3D p21, final Point3D p22, final Point3D p23, final Point3D p24, final Point3D p31,
+                   final Point3D p32, final Point3D p33, final Point3D p34, final Point3D p41, final Point3D p42,
+                   final Point3D p43, final Point3D p44) {
 		this.baseMat = baseMat;
 		c1 = new Cubic(baseMat, p11, p12, p13, p14);
 		c2 = new Cubic(baseMat, p21, p22, p23, p24);

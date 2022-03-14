@@ -4,6 +4,7 @@ import model.Part;
 import model.TopologyType;
 import model.Vertex;
 import transforms.Col;
+import transforms.Mat4Transl;
 
 public class Cube extends Solid{
 
@@ -46,56 +47,59 @@ public class Cube extends Solid{
         indexBuffer.add(34);
         indexBuffer.add(35);
 
-        vertexBuffer.add(new Vertex(0,0,0,new Col(0,1,0.)));//v2
-        vertexBuffer.add(new Vertex(0.3,0,0,new Col(1.,1.,1)));//v3
-        vertexBuffer.add(new Vertex(0.3,0.3,0,new Col(1.,1.,0)));//v4
+        vertexBuffer.add(new Vertex(0.3,0,0,new Col(0,1,0.)));//v2
+        vertexBuffer.add(new Vertex(0.6,0,0,new Col(1.,1.,1)));//v3
+        vertexBuffer.add(new Vertex(0.6,0.3,0,new Col(1.,1.,0)));//v4
 
-        vertexBuffer.add(new Vertex(0,0,0,new Col(1,1,0.)));//v2
-        vertexBuffer.add(new Vertex(0,0.3,0,new Col(0.,1.,1)));//v3
-        vertexBuffer.add(new Vertex(0.3,0.3,0,new Col(1.,1.,0)));//v4
+        vertexBuffer.add(new Vertex(0.3,0,0,new Col(1,1,0.)));//v2
+        vertexBuffer.add(new Vertex(0.3,0.3,0,new Col(0.,1.,1)));//v3
+        vertexBuffer.add(new Vertex(0.6,0.3,0,new Col(1.,1.,0)));//v4
 
-        vertexBuffer.add(new Vertex(0,0,0.3,new Col(0,1,0.)));//v2
+        vertexBuffer.add(new Vertex(0.3,0,0.3,new Col(0,1,0.)));//v2
+        vertexBuffer.add(new Vertex(0.6,0,0.3,new Col(1.,1.,1)));//v3
+        vertexBuffer.add(new Vertex(0.6,0.3,0.3,new Col(1.,1.,0)));//v4
+
+        vertexBuffer.add(new Vertex(0.3,0,0.3,new Col(0,1,0.)));//v2
+        vertexBuffer.add(new Vertex(0.3,0.3,0.3,new Col(0.,1.,1)));//v3
+        vertexBuffer.add(new Vertex(0.6,0.3,0.3,new Col(0.,1.,1)));//v4
+
+        vertexBuffer.add(new Vertex(0.3,0,0.3,new Col(0,1,1.)));//v2
+        vertexBuffer.add(new Vertex(0.3,0.3,0.3,new Col(0.,1.,1)));//v3
+        vertexBuffer.add(new Vertex(0.3,0,0,new Col(0,1,0.)));//v2
+
+        vertexBuffer.add(new Vertex(0.6,0.3,0,new Col(1.,1.,0)));//v4
+        vertexBuffer.add(new Vertex(0.3,0.3,0,new Col(0,1,0.)));//v5
+        vertexBuffer.add(new Vertex(0.6,0.3,0.3,new Col(1.,1.,0)));//v4
+
+        vertexBuffer.add(new Vertex(0.3,0,0,new Col(0,1,0.)));//v2
+        vertexBuffer.add(new Vertex(0.6,0,0,new Col(1.,1.,1)));//v3
+        vertexBuffer.add(new Vertex(0.6,0,0.3,new Col(0.,1.,1)));//v4
+
+
+        vertexBuffer.add(new Vertex(0.3,0,0,new Col(1,1,0.)));//v2
+        vertexBuffer.add(new Vertex(0.3,0.3,0,new Col(0.,1.,1)));//v3
+        vertexBuffer.add(new Vertex(0.3,0.3,0.3,new Col(1.,1.,0)));//v4
+
+
+        vertexBuffer.add(new Vertex(0.3,0,0,new Col(1,1,0.)));//v2
         vertexBuffer.add(new Vertex(0.3,0,0.3,new Col(1.,1.,1)));//v3
-        vertexBuffer.add(new Vertex(0.3,0.3,0.3,new Col(1.,1.,0)));//v4
+        vertexBuffer.add(new Vertex(0.6,0,0.3,new Col(0.,1.,0)));//v4
 
-        vertexBuffer.add(new Vertex(0,0,0.3,new Col(0,1,0.)));//v2
-        vertexBuffer.add(new Vertex(0,0.3,0.3,new Col(0.,1.,1)));//v3
-        vertexBuffer.add(new Vertex(0.3,0.3,0.3,new Col(0.,1.,1)));//v4
+        vertexBuffer.add(new Vertex(0.3,0.3,0,new Col(1,1,0.)));//v2
+        vertexBuffer.add(new Vertex(0.3,0.3,0.3,new Col(1.,1.,1)));//v3
+        vertexBuffer.add(new Vertex(0.6,0.3,0.3,new Col(1.,1.,0)));//v4
 
-        vertexBuffer.add(new Vertex(0,0,0.3,new Col(0,1,1.)));//v2
-        vertexBuffer.add(new Vertex(0,0.3,0.3,new Col(0.,1.,1)));//v3
-        vertexBuffer.add(new Vertex(0,0,0,new Col(0,1,0.)));//v2
+        vertexBuffer.add(new Vertex(0.6,0,0,new Col(1,0,1.)));//v2
+        vertexBuffer.add(new Vertex(0.6,0.3,0,new Col(1.,0.,1)));//v3
+        vertexBuffer.add(new Vertex(0.6,0,0.3,new Col(1.,0.,1)));//v4
 
-        vertexBuffer.add(new Vertex(0.3,0.3,0,new Col(1.,1.,0)));//v4
-        vertexBuffer.add(new Vertex(0,0.3,0,new Col(0,1,0.)));//v5
-        vertexBuffer.add(new Vertex(0.3,0.3,0.3,new Col(1.,1.,0)));//v4
-
-        vertexBuffer.add(new Vertex(0,0,0,new Col(0,1,0.)));//v2
-        vertexBuffer.add(new Vertex(0.3,0,0,new Col(1.,1.,1)));//v3
-        vertexBuffer.add(new Vertex(0.3,0,0.3,new Col(0.,1.,1)));//v4
-
-
-        vertexBuffer.add(new Vertex(0,0,0,new Col(1,1,0.)));//v2
-        vertexBuffer.add(new Vertex(0,0.3,0,new Col(0.,1.,1)));//v3
-        vertexBuffer.add(new Vertex(0,0.3,0.3,new Col(1.,1.,0)));//v4
-
-
-        vertexBuffer.add(new Vertex(0,0,0,new Col(1,1,0.)));//v2
-        vertexBuffer.add(new Vertex(0,0,0.3,new Col(1.,1.,1)));//v3
-        vertexBuffer.add(new Vertex(0.3,0,0.3,new Col(0.,1.,0)));//v4
-
-        vertexBuffer.add(new Vertex(0,0.3,0,new Col(1,1,0.)));//v2
-        vertexBuffer.add(new Vertex(0,0.3,0.3,new Col(1.,1.,1)));//v3
-        vertexBuffer.add(new Vertex(0.3,0.3,0.3,new Col(1.,1.,0)));//v4
-
-        vertexBuffer.add(new Vertex(0.3,0,0,new Col(1,0,1.)));//v2
-        vertexBuffer.add(new Vertex(0.3,0.3,0,new Col(1.,0.,1)));//v3
-        vertexBuffer.add(new Vertex(0.3,0,0.3,new Col(1.,0.,1)));//v4
-
-        vertexBuffer.add(new Vertex(0.3,0,0.3,new Col(1,0,1)));//v2
-        vertexBuffer.add(new Vertex(0.3,0.3,0.3,new Col(1.,0.,1)));//v4
-        vertexBuffer.add(new Vertex(0.3,0.3,0,new Col(1.,0.,1)));//v3
+        vertexBuffer.add(new Vertex(0.6,0,0.3,new Col(1,0,1)));//v2
+        vertexBuffer.add(new Vertex(0.6,0.3,0.3,new Col(1.,0.,1)));//v4
+        vertexBuffer.add(new Vertex(0.6,0.3,0,new Col(1.,0.,1)));//v3
         getPartList().add(new Part(TopologyType.TRIANGLE,0,12));
+
+
+
        /* indexBuffer.add(0);
         indexBuffer.add(1);
         indexBuffer.add(2);

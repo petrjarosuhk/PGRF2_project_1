@@ -32,29 +32,29 @@ public class Pyramid extends Solid{
         indexBuffer.add(20);
         indexBuffer.add(21);
 
-        vertexBuffer.add(new Vertex(0,0,0,new Col(0,0,1.)));//v2
-        vertexBuffer.add(new Vertex(0.3,0,0,new Col(1.,1.,1)));//v3
-        vertexBuffer.add(new Vertex(0.3,0.3,0,new Col(0.,0.,0)));//v4
+        vertexBuffer.add(new Vertex(0,0,0.5,new Col(0,0,1.)));//v2
+        vertexBuffer.add(new Vertex(0.3,0,0.5,new Col(1.,1.,1)));//v3
+        vertexBuffer.add(new Vertex(0.3,0.3,0.5,new Col(0.,0.,0)));//v4
 
-        vertexBuffer.add(new Vertex(0,0,0,new Col(1,0,0.)));//v2
-        vertexBuffer.add(new Vertex(0,0.3,0,new Col(1,1.,1)));//v3
-        vertexBuffer.add(new Vertex(0.3,0.3,0,new Col(1.,0.,0)));//v4
+        vertexBuffer.add(new Vertex(0,0,0.5,new Col(1,0,0.)));//v2
+        vertexBuffer.add(new Vertex(0,0.3,0.5,new Col(1,1.,1)));//v3
+        vertexBuffer.add(new Vertex(0.3,0.3,0.5,new Col(1.,0.,0)));//v4
 
-        vertexBuffer.add(new Vertex(0,0,0,new Col(1,0,0.)));//v2
-        vertexBuffer.add(new Vertex(0.3,0,0,new Col(1.,1.,1)));//v3
-        vertexBuffer.add(new Vertex(0.15,0.15,0.3,new Col(1.,0.,0)));//v4
+        vertexBuffer.add(new Vertex(0,0,0.5,new Col(1,0,0.)));//v2
+        vertexBuffer.add(new Vertex(0.3,0,0.5,new Col(1.,1.,1)));//v3
+        vertexBuffer.add(new Vertex(0.15,0.15,0.8,new Col(1.,0.,0)));//v4
 
-        vertexBuffer.add(new Vertex(0.3,0,0,new Col(1,0,1.)));//v2
-        vertexBuffer.add(new Vertex(0.3,0.3,0,new Col(1.,1.,0)));//v3
-        vertexBuffer.add(new Vertex(0.15,0.15,0.3,new Col(0.,0.,1)));//v4
+        vertexBuffer.add(new Vertex(0.3,0,0.5,new Col(1,0,1.)));//v2
+        vertexBuffer.add(new Vertex(0.3,0.3,0.5,new Col(1.,1.,0)));//v3
+        vertexBuffer.add(new Vertex(0.15,0.15,0.8,new Col(0.,0.,1)));//v4
 
-        vertexBuffer.add(new Vertex(0,0,0,new Col(1,0,0.)));//v2
-        vertexBuffer.add(new Vertex(0,0.3,0,new Col(1.,1.,1)));//v3
-        vertexBuffer.add(new Vertex(0.15,0.15,0.3,new Col(1,0,0.)));//v2
+        vertexBuffer.add(new Vertex(0,0,0.5,new Col(1,0,0.)));//v2
+        vertexBuffer.add(new Vertex(0,0.3,0.5,new Col(1.,1.,1)));//v3
+        vertexBuffer.add(new Vertex(0.15,0.15,0.8,new Col(1,0,0.)));//v2
 
-        vertexBuffer.add(new Vertex(0,0.3,0,new Col(1.,0.,0)));//v4
-        vertexBuffer.add(new Vertex(0.3,0.3,0,new Col(1,1,1.)));//v5
-        vertexBuffer.add(new Vertex(0.15,0.15,0.3,new Col(1.,0.,0)));//v4
+        vertexBuffer.add(new Vertex(0,0.3,0.5,new Col(1.,0.,0)));//v4
+        vertexBuffer.add(new Vertex(0.3,0.3,0.5,new Col(1,1,1.)));//v5
+        vertexBuffer.add(new Vertex(0.15,0.15,0.8,new Col(1.,0.,0)));//v4
 
 
 

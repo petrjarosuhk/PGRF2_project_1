@@ -20,13 +20,23 @@ public class Controller3D implements Controller {
     private boolean cubeEdit = false;
     private boolean triangleEdit = false;
     private boolean pyramidEdit = false;
+    private boolean translationCube = false;
+    private  boolean translationPyramid = false;
+    private boolean rotationCube = false;
+    private boolean rotationPyramid = false;
+    private  boolean tranX = false;
+    private boolean transY = false;
+    private boolean transZ = false;
+    private boolean translationTriangle = false;
+    private boolean rotationTriangle = false;
+
     private int width, height;
 
 
     private Camera camera = new Camera()
-            .withPosition(new Vec3D(-0.36,-0.73,1.82))
-            .withAzimuth(-4.58)
-            .withZenith(-1.33)
+            .withPosition(new Vec3D(1.8,0.6,1.6))
+            .withAzimuth(-3.2)
+            .withZenith(-0.7)
             .withFirstPerson(true);
     double camStep = 0.1;
     private ZbufferVisibility zbufferVisibility;
@@ -42,6 +52,7 @@ public class Controller3D implements Controller {
     Triangle triangle = new Triangle();
     Cube cube2 = new Cube();
    Pyramid pyramid = new Pyramid();
+   BicubicPlate bicubicPlate = new BicubicPlate();
     Shader shader;
 
 
@@ -79,8 +90,329 @@ public class Controller3D implements Controller {
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+
                 oldPoint= new Point2D(e.getX(),e.getY());
 
+                //cube translace
+                if ((cubeEdit == true) && (translationCube == true) && (e.getButton() == MouseEvent.BUTTON1) && (tranX == true) ) {
+
+                        cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(0.1, 0, 0)));
+                        panel.clear();
+                        redraw();
+
+
+                }
+                if ((cubeEdit == true) && (translationCube == true) && (e.getButton() == MouseEvent.BUTTON3)&& (tranX == true)) {
+
+                    cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(-0.1, 0, 0)));
+                    panel.clear();
+                    redraw();
+                }
+
+
+                if ((cubeEdit == true) && (translationCube == true) && (e.getButton() == MouseEvent.BUTTON1) && (transY == true) ) {
+
+                    cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(0, 0.1, 0)));
+                    panel.clear();
+                    redraw();
+                }
+                if ((cubeEdit == true) && (translationCube == true) && (e.getButton() == MouseEvent.BUTTON3) && (transY == true) ) {
+
+                    cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(0, -0.1, 0)));
+                    panel.clear();
+                    redraw();
+                }
+
+                if ((cubeEdit == true) && (translationCube == true) && (e.getButton() == MouseEvent.BUTTON1) && (transZ == true) ) {
+
+                    cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(0, 0, 0.1)));
+                    panel.clear();
+                    redraw();
+                }
+                if ((cubeEdit == true) && (translationCube == true) && (e.getButton() == MouseEvent.BUTTON3) && (transZ == true) ) {
+
+                    cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(0, 0, -0.1)));
+                    panel.clear();
+                    redraw();
+                }
+                //pyramid translace
+
+
+                if ((pyramidEdit == true) && (translationPyramid == true) && (e.getButton() == MouseEvent.BUTTON1) && (tranX == true) ) {
+
+                    pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4Transl(0.1, 0, 0)));
+                    panel.clear();
+                    redraw();
+                }
+                if ((pyramidEdit == true) && (translationPyramid == true) && (e.getButton() == MouseEvent.BUTTON3)&& (tranX == true)) {
+
+                    pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4Transl(-0.1, 0, 0)));
+                    panel.clear();
+                    redraw();
+                }
+
+
+                if ((pyramidEdit == true) && (translationPyramid == true) && (e.getButton() == MouseEvent.BUTTON1) && (transY == true) ) {
+
+                    pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4Transl(0, 0.1, 0)));
+                    panel.clear();
+                    redraw();
+                }
+                if ((pyramidEdit == true) && (translationPyramid == true) && (e.getButton() == MouseEvent.BUTTON3) && (transY == true) ) {
+
+                    pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4Transl(0, -0.1, 0)));
+                    panel.clear();
+                    redraw();
+                }
+
+                if ((pyramidEdit == true) && (translationPyramid == true) && (e.getButton() == MouseEvent.BUTTON1) && (transZ == true) ) {
+
+                    pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4Transl(0, 0, 0.1)));
+                    panel.clear();
+                    redraw();
+                }
+                if ((pyramidEdit == true) && (translationPyramid == true) && (e.getButton() == MouseEvent.BUTTON3) && (transZ == true) ) {
+
+                    pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4Transl(0, 0, -0.1)));
+                    panel.clear();
+                    redraw();
+                }
+
+
+
+
+                //triangle rotation
+
+
+                if ((triangleEdit == true) && (rotationTriangle == true) && (e.getButton() == MouseEvent.BUTTON1) && (tranX == true) ) {
+                    {
+                        triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotX(0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+
+                if ((triangleEdit == true) && (rotationTriangle == true) && (e.getButton() == MouseEvent.BUTTON1) && (transY == true) ) {
+                    {
+                        triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotY(0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+                if ((triangleEdit == true) && (rotationTriangle == true) && (e.getButton() == MouseEvent.BUTTON1) && (transZ == true) ) {
+                    {
+                        triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotZ(0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+                if ((triangleEdit == true) && (rotationTriangle == true) && (e.getButton() == MouseEvent.BUTTON3) && (tranX == true) ) {
+                    {
+                        triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotX(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+                if ((triangleEdit == true) && (rotationTriangle == true) && (e.getButton() == MouseEvent.BUTTON3) && (transY == true) ) {
+                    {
+                        triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotY(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+                if ((triangleEdit== true) && (rotationTriangle== true) && (e.getButton() == MouseEvent.BUTTON3) && (transZ == true) ) {
+                    {
+                        triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotZ(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+                //cube rotation
+
+                if ((cubeEdit == true) && (rotationCube == true) && (e.getButton() == MouseEvent.BUTTON1) && (tranX == true) ) {
+                    {
+                    cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotX(0.1)));
+                        panel.clear();
+                        redraw();
+                }
+                }
+
+
+
+                if ((cubeEdit == true) && (rotationCube == true) && (e.getButton() == MouseEvent.BUTTON1) && (transY == true) ) {
+                    {
+                        cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotY(0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+                if ((cubeEdit == true) && (rotationCube == true) && (e.getButton() == MouseEvent.BUTTON1) && (transZ == true) ) {
+                    {
+                        cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotZ(0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+                if ((cubeEdit == true) && (rotationCube == true) && (e.getButton() == MouseEvent.BUTTON3) && (tranX == true) ) {
+                    {
+                        cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotX(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+                if ((cubeEdit == true) && (rotationCube == true) && (e.getButton() == MouseEvent.BUTTON3) && (transY == true) ) {
+                    {
+                        cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotY(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+                if ((cubeEdit == true) && (rotationCube == true) && (e.getButton() == MouseEvent.BUTTON3) && (transZ == true) ) {
+                    {
+                        cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotZ(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+                //pyramid rotation
+
+
+                if ((pyramidEdit== true) && (rotationPyramid == true) && (e.getButton() == MouseEvent.BUTTON1) && (tranX == true) ) {
+                    {
+                        pyramid.setModelmatrix( pyramid.getModelMatrix().mul(new Mat4RotX(0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+
+                if ((pyramidEdit== true) && (rotationPyramid == true) && (e.getButton() == MouseEvent.BUTTON1) && (transY == true) ) {
+                    {
+                        pyramid.setModelmatrix( pyramid.getModelMatrix().mul(new Mat4RotY(0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+                if((pyramidEdit== true) && (rotationPyramid == true) && (e.getButton() == MouseEvent.BUTTON1) && (transZ == true) ) {
+                    {
+                        pyramid.setModelmatrix( pyramid.getModelMatrix().mul(new Mat4RotZ(0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+                if ((pyramidEdit== true) && (rotationPyramid == true) && (e.getButton() == MouseEvent.BUTTON3) && (tranX == true) ) {
+                    {
+                        pyramid.setModelmatrix( pyramid.getModelMatrix().mul(new Mat4RotX(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+                if  ((pyramidEdit== true) && (rotationPyramid == true) && (e.getButton() == MouseEvent.BUTTON3) && (transY == true) ) {
+                    {
+                        pyramid.setModelmatrix( pyramid.getModelMatrix().mul(new Mat4RotY(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+                if  ((pyramidEdit== true) && (rotationPyramid == true) && (e.getButton() == MouseEvent.BUTTON3) && (transZ == true) ) {
+                    {
+                        pyramid.setModelmatrix( pyramid.getModelMatrix().mul(new Mat4RotZ(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+
+                //triangle transla
+
+
+                if ((triangleEdit == true) && (translationTriangle == true) && (e.getButton() == MouseEvent.BUTTON1) && (tranX == true) ) {
+
+                    triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4Transl(0.1, 0, 0)));
+                    panel.clear();
+                    redraw();
+                }
+                if ((triangleEdit == true) && (translationTriangle == true) && (e.getButton() == MouseEvent.BUTTON3)&& (tranX == true)) {
+
+                    triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4Transl(-0.1, 0, 0)));
+                    panel.clear();
+                    redraw();
+                }
+
+
+                if ((triangleEdit == true) && (translationTriangle == true) && (e.getButton() == MouseEvent.BUTTON1) && (transY == true) ) {
+
+                    triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4Transl(0, 0.1, 0)));
+                    panel.clear();
+                    redraw();
+                }
+                if ((triangleEdit == true) && (translationTriangle == true) && (e.getButton() == MouseEvent.BUTTON3) && (transY == true) ) {
+
+                    triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4Transl(0, -0.1, 0)));
+                    panel.clear();
+                    redraw();
+                }
+
+                if ((triangleEdit == true) && (translationTriangle== true) && (e.getButton() == MouseEvent.BUTTON1) && (transZ == true) ) {
+
+                    triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4Transl(0, 0, 0.1)));
+                    panel.clear();
+                    redraw();
+                }
+                if ((triangleEdit == true) && (translationTriangle == true) && (e.getButton() == MouseEvent.BUTTON3) && (transZ == true) ) {
+
+                    triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4Transl(0, 0, -0.1)));
+                    panel.clear();
+                    redraw();
+                }
+
+
+
+
+
+            }
+        });
+
+        panel.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                if(e.getWheelRotation() == -1) {
+
+                    camera = camera.forward(camStep);
+                    panel.clear();
+                    redraw();
+                }
+
+                if(e.getWheelRotation() == 1) {
+
+                    camera = camera.backward(camStep);
+                    panel.clear();
+                    redraw();
+                }
             }
         });
 
@@ -103,6 +435,7 @@ public class Controller3D implements Controller {
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
+
             }
         });
 
@@ -140,43 +473,14 @@ public class Controller3D implements Controller {
                                 0.1,
                                 30);
                         break;
-                    case KeyEvent.VK_X:
-                        if (cubeEdit == true) {
-                            cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotX(0.1)));
-                        }
-                        if (triangleEdit == true) {
-                            triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotX(0.1)));
-                        }
-                        if (pyramidEdit == true) {
-                            pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4RotX(0.1)));
-                        }
-                        break;
-                    case KeyEvent.VK_Y:
-                        if (cubeEdit == true) {
-                            cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotY(0.1)));
-                        }
-                        if (triangleEdit == true) {
-                            triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotY(0.1)));
-                        }
-                        if (pyramidEdit == true) {
-                            pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4RotY(0.1)));
-                        }
-                        break;
-                    case KeyEvent.VK_Z:
-                        if (cubeEdit == true) {
-                            cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotZ(0.1)));
-                        }
-                        if (triangleEdit == true) {
-                            triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotZ(0.1)));
-                        }
-                        if (pyramidEdit == true) {
-                            pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4RotZ(0.1)));
-                        }
-                        break;
-                    case KeyEvent.VK_T:
-                        if (cubeEdit == true) {
-                            cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(0.1, 0, 0)));
-                        }
+
+
+                    case KeyEvent.VK_M:
+
+
+                        panel.clear();
+                        redraw();
+
                         break;
                     case KeyEvent.VK_N:
                                  {
@@ -285,8 +589,9 @@ public class Controller3D implements Controller {
         redraw3D();
         panel.repaint();
     }
-
+private int trans = 0;
     private void redraw3D() {
+
 
         triangleRasterizer.getzBuffer().getDbuffer().clear();
 
@@ -308,6 +613,8 @@ public class Controller3D implements Controller {
                  triangleEdit = false;
                 }
 
+
+
                 if(e.getKeyChar() == 'k'){
                     triangleEdit = true;
                     pyramidEdit = false;
@@ -319,15 +626,212 @@ public class Controller3D implements Controller {
                     cubeEdit = false;
 
                 }
+                if(pyramidEdit == true)
+                { if(e.getKeyChar() == 't') {
+                    translationCube = false;
+                    cubeEdit = false;
+                    translationPyramid = true;
+
+
+                }
+                }
+
+
+                if(triangleEdit == true)
+                { if(e.getKeyChar() == 't') {
+                    translationCube = false;
+                    cubeEdit = false;
+                    translationPyramid = false;
+                    translationTriangle = true;
+
+                }
+                }
+                if(pyramidEdit == true)
+                { if(e.getKeyChar() == 'r') {
+                    translationCube = false;
+                    cubeEdit = false;
+                    translationPyramid =false;
+                    rotationPyramid = true;
+
+                }
+                }
+
+
+                if(triangleEdit == true)
+                { if(e.getKeyChar() == 'r') {
+                    translationCube = false;
+                    cubeEdit = false;
+                    translationPyramid =false;
+                    rotationPyramid =false;
+                    rotationTriangle = true;
+
+                }
+                }
+
+                if(rotationTriangle == true){
+                    if(e.getKeyChar() == 'x') {
+                        tranX = true;
+                        transY = false;
+                        transZ = false;
+                    }
+                }
+                if(rotationTriangle == true){
+                    if(e.getKeyChar() == 'y') {
+                        tranX = false;
+                        transY = true;
+                        transZ = false;
+                    }
+                }
+
+                if(rotationTriangle == true){
+                    if(e.getKeyChar() == 'z') {
+                        tranX = false;
+                        transY = false;
+                        transZ = true;
+                    }
+                }
+
+
+                if(rotationPyramid == true){
+                    if(e.getKeyChar() == 'x') {
+                        tranX = true;
+                        transY = false;
+                        transZ = false;
+                    }
+                }
+                if(rotationPyramid == true){
+                    if(e.getKeyChar() == 'y') {
+                        tranX = false;
+                        transY = true;
+                        transZ = false;
+                    }
+                }
+
+                if(rotationPyramid == true){
+                    if(e.getKeyChar() == 'z') {
+                        tranX = false;
+                        transY = false;
+                        transZ = true;
+                    }
+                }
+
+
+                if(translationPyramid == true){
+                    if(e.getKeyChar() == 'x') {
+                        tranX = true;
+                        transY = false;
+                        transZ = false;
+                    }
+                }
+                if(translationPyramid == true){
+                    if(e.getKeyChar() == 'y') {
+                        tranX = false;
+                        transY = true;
+                        transZ = false;
+                    }
+                }
+
+                if(translationPyramid== true){
+                    if(e.getKeyChar() == 'z') {
+                        tranX = false;
+                        transY = false;
+                        transZ = true;
+                    }
+                }
+
+                if(cubeEdit == true)
+                { if(e.getKeyChar() == 't') {
+                    translationCube = true;
+                    translationPyramid = false;
+                }
+                }
+
+                if(translationCube == true){
+                    if(e.getKeyChar() == 'x') {
+                        tranX = true;
+                        transY = false;
+                        transZ = false;
+                    }
+                }
+                if(translationCube == true){
+                    if(e.getKeyChar() == 'y') {
+                        tranX = false;
+                        transY = true;
+                        transZ = false;
+                    }
+                }
+
+                if(translationCube == true){
+                    if(e.getKeyChar() == 'z') {
+                        tranX = false;
+                        transY = false;
+                        transZ = true;
+                    }
+                }
+
+                if(cubeEdit == true)
+                { if(e.getKeyChar() == 'r') {
+                    translationCube = false;
+                    translationPyramid = false;
+                    rotationCube = true;
+                }
+                }
+
+                if(rotationCube == true){
+                    if(e.getKeyChar() == 'x') {
+                        tranX = true;
+                        transY = false;
+                        transZ = false;
+                    }
+                }
+                if(rotationCube == true){
+                    if(e.getKeyChar() == 'y') {
+                        tranX = false;
+                        transY = true;
+                        transZ = false;
+                    }
+                }
+
+                if(rotationCube == true){
+                    if(e.getKeyChar() == 'z') {
+                        tranX = false;
+                        transY = false;
+                        transZ = true;
+                    }
+                }
+
+
+                if(translationTriangle == true){
+                    if(e.getKeyChar() == 'x') {
+                        tranX = true;
+                        transY = false;
+                        transZ = false;
+                    }
+                }
+                if(translationTriangle == true){
+                    if(e.getKeyChar() == 'y') {
+                        tranX = false;
+                        transY = true;
+                        transZ = false;
+                    }
+                }
+
+                if(translationTriangle == true){
+                    if(e.getKeyChar() == 'z') {
+                        tranX = false;
+                        transY = false;
+                        transZ = true;
+                    }
+                }
 
             }
         });
 
        renderer.render(pyramid);
-        renderer.render(triangle);
-        //
+       renderer.render(triangle);
        renderer.render(cube2);
-        //renderer.render(cube);
+       renderer.render(bicubicPlate);
+
 
     }
 

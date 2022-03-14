@@ -115,6 +115,34 @@ public void rasterize(Vertex v1){
 
                if (fastClip(p1.getPosition()) || fastClip(p2.getPosition()) || fastClip(p3.getPosition()));
 
+
+               if(p1.getPosition().getZ() <p2.getPosition().getZ())
+               {
+                   Vertex tmp = p1;
+                   p1 = p2;
+                   p2 = tmp;
+
+               }
+               if(p2.getPosition().getZ() < p3.getPosition().getZ())
+               {
+                   Vertex tmp = p2;
+                   p2 = p3;
+                   p3 = tmp;
+
+               }
+               if(p1.getPosition().getZ() < p2.getPosition().getZ())
+               {
+                   Vertex tmp = p1;
+                   p1 = p2;
+                   p2 = tmp;
+               }
+
+               if(p1.getPosition().getZ() < 0)
+               {
+                   return;
+               }
+
+
                    if (p2.getPosition().getZ()<0)
             {
                 double s1 = (0 - p1.getPosition().getZ())/(p2.getPosition().getZ() - p2.getPosition().getZ()); //odečti minimem děl rozsahem
@@ -135,11 +163,12 @@ public void rasterize(Vertex v1){
                     return;
 
                 }
-                simpleScanlineTriangle(p1,p2,p3,1);
+             //   simpleScanlineTriangle(p1,p2,p3,1);
 
         Optional<Vertex> v1Dehomog = p1.dehomog();
         Optional<Vertex> v2Dehomog = p2.dehomog();
         Optional<Vertex> v3Dehomog = p3.dehomog();
+
         if (v1Dehomog.isEmpty() || v2Dehomog.isEmpty() || v3Dehomog.isEmpty())
             return;
 
@@ -166,12 +195,15 @@ public void rasterize(Vertex v1){
             p1 =p2;
             p2=temp;
         }
-        for (int y = (int) p1.getPosition().getY()+1; y < p2.getPosition().getY(); y++) {
+
+       for (int y = (int) p1.getPosition().getY()+1; y < p2.getPosition().getY(); y++) {
            simpleScanlineTriangle(p1, p2, p3, y);
         }
-        for (int y = (int) p2.getPosition().getY()+1; y < p3.getPosition().getY(); y++) {
+        for (int y = (int)p2.getPosition().getY()+1; y < p3.getPosition().getY(); y++) {
+
             simpleScanlineTriangle(p3, p2, p1, y);
         }
+
 
     }
     private void simpleScanlineTriangle(Vertex a, Vertex b, Vertex c, int y) {
@@ -206,7 +238,7 @@ public void rasterize(Vertex v1){
     private boolean fastClip(Point3D p) {
         if (p.getW() < p.getX() || p.getX() < -p.getW()) return true;
         if (p.getW() < p.getY() || p.getY() < -p.getW()) return true;
-        return p.getW() < p.getZ() || p.getZ() < 0;// perspektivní, u orth by to byla 1
+        return p.getW() < p.getZ() || p.getZ() < 0;
     }
 
 
