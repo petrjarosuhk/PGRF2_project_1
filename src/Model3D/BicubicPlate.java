@@ -7,7 +7,7 @@ import transforms.Bicubic;
 import transforms.Col;
 import transforms.Cubic;
 import transforms.Point3D;
-
+/*Třída s implementací index a vertex bufferu s vzužitím Bicubici*/
 public class BicubicPlate extends Solid{
 
     public BicubicPlate(){

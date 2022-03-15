@@ -29,6 +29,8 @@ public class TriangleRasterizer {
         this.shader = shader;
     }
 
+
+    //rasterizování jednoho bodu
     public void rasterize(Vertex v1) {
         if (fastClip(v1.getPosition()))
             return;
@@ -40,9 +42,12 @@ public class TriangleRasterizer {
         zBuffer.drawPixelWithTest((int) v1.getPosition().getX(), (int) v1.getPosition().getY(), v1.getPosition().getZ(), v1.getColor());
     }
 
+    //rasterizace dvouch bodů
     public void rasterize(Vertex p1, Vertex p2) {
 
 
+
+        //fast clip
         if (fastClip(p1.getPosition()) || fastClip(p2.getPosition())) ;
 
 
@@ -57,6 +62,7 @@ public class TriangleRasterizer {
         trivialLine(p1, p2);
     }
 
+    //rasterizace lines
     public void trivialLine(Vertex p1, Vertex p2) {
         double dx = p2.getPosition().getX() - p1.getPosition().getX();
         double dy = p2.getPosition().getY() - p1.getPosition().getY();
@@ -89,12 +95,15 @@ public class TriangleRasterizer {
 
     }
 
-    public void rasterize3(Vertex p1, Vertex p2, Vertex p3) {
 
+    //rasterizace pro wireframe
+    public void rasterizeWire(Vertex p1, Vertex p2, Vertex p3) {
 
+        //fast clip
         if (fastClip(p1.getPosition()) || fastClip(p2.getPosition())) ;
 
 
+        //dehomogenizace
         Optional<Vertex> v1Dehomog = p1.dehomog();
         Optional<Vertex> v2Dehomog = p2.dehomog();
         Optional<Vertex> v3Dehomog = p3.dehomog();
@@ -112,12 +121,15 @@ public class TriangleRasterizer {
     }
 
 
+    //rasterizace pro tři body trojúhelník
     public void rasterize(Vertex p1, Vertex p2, Vertex p3) {
 
 
+        //fast clip
         if (fastClip(p1.getPosition()) || fastClip(p2.getPosition()) || fastClip(p3.getPosition())) ;
 
 
+        //seřazení
         if (p1.getPosition().getZ() < p2.getPosition().getZ()) {
             Vertex tmp = p1;
             p1 = p2;
@@ -137,6 +149,7 @@ public class TriangleRasterizer {
         }
 
 
+        //částečný ořezání
         if (p1.getPosition().getZ() < 0) {
             return;
         }
@@ -170,6 +183,7 @@ public class TriangleRasterizer {
         if (v1Dehomog.isEmpty() || v2Dehomog.isEmpty() || v3Dehomog.isEmpty())
             return;
 
+        //dehomogenizace
         Vec3D newP1 = transform(v1Dehomog.get().getPosition());
         Vec3D newP2 = transform(v2Dehomog.get().getPosition());
         Vec3D newP3 = transform(v3Dehomog.get().getPosition());
@@ -202,7 +216,6 @@ public class TriangleRasterizer {
            simpleScanlineTriangle(p1, p2, p3, y);
 
 
-
       }
         for (int y = (int) Math.max(p2.getPosition().getY()+1,0); y < Math.min(p3.getPosition().getY(), height-1); y++) {
 
@@ -215,11 +228,10 @@ public class TriangleRasterizer {
 
 
 
+    //interpolace trojúhelníku
     private void simpleScanlineTriangle(Vertex a, Vertex b, Vertex c, int y) {
         double s1 = (y - a.getPosition().getY()) / (b.getPosition().getY() - a.getPosition().getY());
         double s2 = (y - a.getPosition().getY()) / (c.getPosition().getY() - a.getPosition().getY());
-        double zLeft = a.getPosition().getZ() * (1 - s1) + b.getPosition().getZ() * s1;
-        double zRight = a.getPosition().getZ() * (1 - s2) + c.getPosition().getZ() * s2;
         Vertex v12 = a.mul(1 - s1).add(b.mul(s1));
         Vertex v13 = a.mul(1 - s2).add(c.mul(s2));
         if (v12.getPosition().getX() > v13.getPosition().getX()) {
@@ -249,6 +261,7 @@ public class TriangleRasterizer {
         return zBuffer;
     }
 
+    //metoda pro fastClip
     private boolean fastClip(Point3D p) {
         if (p.getW() < p.getX() || p.getX() < -p.getW()) return true;
         if (p.getW() < p.getY() || p.getY() < -p.getW()) return true;

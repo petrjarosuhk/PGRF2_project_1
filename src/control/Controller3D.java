@@ -33,6 +33,7 @@ public class Controller3D implements Controller {
     private int width, height;
 
 
+    //nastavení kamery
     private Camera camera = new Camera()
             .withPosition(new Vec3D(1.8,0.6,1.6))
             .withAzimuth(-3.2)
@@ -45,7 +46,6 @@ public class Controller3D implements Controller {
     Mat4 projection = new Mat4Identity();
     Point2D oldPoint;
     int modeCut =0;
-    ArrowXandTraingle ar = new ArrowXandTraingle();
     AxesY arrowY = new AxesY();
     AxesX axesX = new AxesX();
     AxesZ arrowZ = new AxesZ();
@@ -85,6 +85,7 @@ public class Controller3D implements Controller {
 
     }
 
+    //popsání co se stane při daných poodmínkách, jestli se bude rotovat, translace atp...
     @Override
     public void initListeners(Panel panel) {
         panel.addMouseListener(new MouseAdapter() {
@@ -604,6 +605,8 @@ private int trans = 0;
         renderer.render(arrowZ);
         renderer.render(arrowY);
         renderer.render(axesX);
+
+        //listener pro výběr aktivních těles a dalších editačních postupů
         panel.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -611,6 +614,7 @@ private int trans = 0;
                  cubeEdit = true;
                  pyramidEdit = false;
                  triangleEdit = false;
+                 System.out.println("Aktivní těleso pro výběr zvoleno Cube");
                 }
 
 
@@ -619,11 +623,13 @@ private int trans = 0;
                     triangleEdit = true;
                     pyramidEdit = false;
                     cubeEdit = false;
+                    System.out.println("Aktivní těleso pro výběr zvoleno Trojúhelník");
                 }
                 if(e.getKeyChar() == 'h'){
                     pyramidEdit = true;
                     triangleEdit = false;
                     cubeEdit = false;
+                    System.out.println("Aktivní těleso pro výběr zvoleno Pyramida");
 
                 }
                 if(pyramidEdit == true)
@@ -631,6 +637,7 @@ private int trans = 0;
                     translationCube = false;
                     cubeEdit = false;
                     translationPyramid = true;
+                    System.out.println("Zvolena translace pro daný aktivní těleso.");
 
 
                 }
@@ -643,6 +650,7 @@ private int trans = 0;
                     cubeEdit = false;
                     translationPyramid = false;
                     translationTriangle = true;
+                    System.out.println("Zvolena translace pro daný aktivní těleso.");
 
                 }
                 }
@@ -652,6 +660,7 @@ private int trans = 0;
                     cubeEdit = false;
                     translationPyramid =false;
                     rotationPyramid = true;
+                    System.out.println("Zvolena rotace pro daný aktivní těleso.");
 
                 }
                 }
@@ -664,6 +673,7 @@ private int trans = 0;
                     translationPyramid =false;
                     rotationPyramid =false;
                     rotationTriangle = true;
+                    System.out.println("Zvolena rotace pro daný aktivní těleso.");
 
                 }
                 }
@@ -673,6 +683,7 @@ private int trans = 0;
                         tranX = true;
                         transY = false;
                         transZ = false;
+                        System.out.println("Zvolena osa X.");
                     }
                 }
                 if(rotationTriangle == true){
@@ -680,6 +691,7 @@ private int trans = 0;
                         tranX = false;
                         transY = true;
                         transZ = false;
+                        System.out.println("Zvolena osa Y.");
                     }
                 }
 
@@ -688,6 +700,7 @@ private int trans = 0;
                         tranX = false;
                         transY = false;
                         transZ = true;
+                        System.out.println("Zvolena osa Z.");
                     }
                 }
 
@@ -697,6 +710,7 @@ private int trans = 0;
                         tranX = true;
                         transY = false;
                         transZ = false;
+                        System.out.println("Zvolena osa X.");
                     }
                 }
                 if(rotationPyramid == true){
@@ -704,6 +718,7 @@ private int trans = 0;
                         tranX = false;
                         transY = true;
                         transZ = false;
+                        System.out.println("Zvolena osa Y.");
                     }
                 }
 
@@ -712,6 +727,7 @@ private int trans = 0;
                         tranX = false;
                         transY = false;
                         transZ = true;
+                        System.out.println("Zvolena osa Z.");
                     }
                 }
 
@@ -721,6 +737,7 @@ private int trans = 0;
                         tranX = true;
                         transY = false;
                         transZ = false;
+                        System.out.println("Zvolena osa X.");
                     }
                 }
                 if(translationPyramid == true){
@@ -728,6 +745,7 @@ private int trans = 0;
                         tranX = false;
                         transY = true;
                         transZ = false;
+                        System.out.println("Zvolena osa Y.");
                     }
                 }
 
@@ -736,6 +754,7 @@ private int trans = 0;
                         tranX = false;
                         transY = false;
                         transZ = true;
+                        System.out.println("Zvolena osa Z.");
                     }
                 }
 
@@ -743,6 +762,8 @@ private int trans = 0;
                 { if(e.getKeyChar() == 't') {
                     translationCube = true;
                     translationPyramid = false;
+                    translationTriangle = false;
+                    System.out.println("Zvolena translace pro daný aktivní těleso.");
                 }
                 }
 
@@ -751,6 +772,7 @@ private int trans = 0;
                         tranX = true;
                         transY = false;
                         transZ = false;
+                        System.out.println("Zvolena osa X.");
                     }
                 }
                 if(translationCube == true){
@@ -758,6 +780,7 @@ private int trans = 0;
                         tranX = false;
                         transY = true;
                         transZ = false;
+                        System.out.println("Zvolena osa Y.");
                     }
                 }
 
@@ -766,6 +789,7 @@ private int trans = 0;
                         tranX = false;
                         transY = false;
                         transZ = true;
+                        System.out.println("Zvolena osa Z.");
                     }
                 }
 
@@ -774,6 +798,7 @@ private int trans = 0;
                     translationCube = false;
                     translationPyramid = false;
                     rotationCube = true;
+                    System.out.println("Zvolena rotace pro daný aktivní těleso.");
                 }
                 }
 
@@ -782,6 +807,7 @@ private int trans = 0;
                         tranX = true;
                         transY = false;
                         transZ = false;
+                        System.out.println("Zvolena osa X.");
                     }
                 }
                 if(rotationCube == true){
@@ -789,6 +815,7 @@ private int trans = 0;
                         tranX = false;
                         transY = true;
                         transZ = false;
+                        System.out.println("Zvolena osa Y.");
                     }
                 }
 
@@ -797,6 +824,7 @@ private int trans = 0;
                         tranX = false;
                         transY = false;
                         transZ = true;
+                        System.out.println("Zvolena osa Z.");
                     }
                 }
 
@@ -806,6 +834,7 @@ private int trans = 0;
                         tranX = true;
                         transY = false;
                         transZ = false;
+                        System.out.println("Zvolena osa X.");
                     }
                 }
                 if(translationTriangle == true){
@@ -813,6 +842,7 @@ private int trans = 0;
                         tranX = false;
                         transY = true;
                         transZ = false;
+                        System.out.println("Zvolena osa Y.");
                     }
                 }
 
@@ -821,12 +851,14 @@ private int trans = 0;
                         tranX = false;
                         transY = false;
                         transZ = true;
+                        System.out.println("Zvolena osa Z.");
                     }
                 }
 
             }
         });
 
+        //rendering daného objketu, volání metody
        renderer.render(pyramid);
        renderer.render(triangle);
        renderer.render(cube2);

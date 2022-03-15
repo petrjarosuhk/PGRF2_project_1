@@ -2,6 +2,8 @@ package raster;
 
 import transforms.Col;
 
+/*Řešení viditelnosti*/
+
 public class ZbufferVisibility {
     private final ImageBuffer iBuffer;
     private final DepthBuffer dbuffer;
