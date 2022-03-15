@@ -7,6 +7,8 @@ import model.Vertex;
 import transforms.Mat4;
 import transforms.Mat4Identity;
 
+/*Třída pro renderer daného objektu.*/
+
 public class Renderer {
     private TriangleRasterizer triangleRasterizer;
     Mat4 viewMatrix = new Mat4Identity();
@@ -22,6 +24,7 @@ public class Renderer {
             render(s);
         }
     }
+
 
     public void render(Solid solid) {
         Mat4 trans = solid.getModelMatrix().mul(viewMatrix.mul(projectionMatrix));
@@ -58,7 +61,7 @@ public class Renderer {
                         v2 = v2.mul(trans);
                         v3 = v3.mul(trans);
 
-                        triangleRasterizer.rasterize3(
+                        triangleRasterizer.rasterizeWire(
                                     new Vertex(v1.mul(1 / v1.getOne())),
                                     new Vertex(v2.mul(1 / v2.getOne())),
                                     new Vertex(v3.mul(1 / v3.getOne()))

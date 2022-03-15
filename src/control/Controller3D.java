@@ -20,13 +20,24 @@ public class Controller3D implements Controller {
     private boolean cubeEdit = false;
     private boolean triangleEdit = false;
     private boolean pyramidEdit = false;
+    private boolean translationCube = false;
+    private  boolean translationPyramid = false;
+    private boolean rotationCube = false;
+    private boolean rotationPyramid = false;
+    private  boolean tranX = false;
+    private boolean transY = false;
+    private boolean transZ = false;
+    private boolean translationTriangle = false;
+    private boolean rotationTriangle = false;
+
     private int width, height;
 
 
+    //nastavení kamery
     private Camera camera = new Camera()
-            .withPosition(new Vec3D(-0.36,-0.73,1.82))
-            .withAzimuth(-4.58)
-            .withZenith(-1.33)
+            .withPosition(new Vec3D(1.8,0.6,1.6))
+            .withAzimuth(-3.2)
+            .withZenith(-0.7)
             .withFirstPerson(true);
     double camStep = 0.1;
     private ZbufferVisibility zbufferVisibility;
@@ -35,13 +46,13 @@ public class Controller3D implements Controller {
     Mat4 projection = new Mat4Identity();
     Point2D oldPoint;
     int modeCut =0;
-    ArrowXandTraingle ar = new ArrowXandTraingle();
     AxesY arrowY = new AxesY();
     AxesX axesX = new AxesX();
     AxesZ arrowZ = new AxesZ();
     Triangle triangle = new Triangle();
     Cube cube2 = new Cube();
    Pyramid pyramid = new Pyramid();
+   BicubicPlate bicubicPlate = new BicubicPlate();
     Shader shader;
 
 
@@ -74,13 +85,335 @@ public class Controller3D implements Controller {
 
     }
 
+    //popsání co se stane při daných poodmínkách, jestli se bude rotovat, translace atp...
     @Override
     public void initListeners(Panel panel) {
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+
                 oldPoint= new Point2D(e.getX(),e.getY());
 
+                //cube translace
+                if ((cubeEdit == true) && (translationCube == true) && (e.getButton() == MouseEvent.BUTTON1) && (tranX == true) ) {
+
+                        cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(0.1, 0, 0)));
+                        panel.clear();
+                        redraw();
+
+
+                }
+                if ((cubeEdit == true) && (translationCube == true) && (e.getButton() == MouseEvent.BUTTON3)&& (tranX == true)) {
+
+                    cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(-0.1, 0, 0)));
+                    panel.clear();
+                    redraw();
+                }
+
+
+                if ((cubeEdit == true) && (translationCube == true) && (e.getButton() == MouseEvent.BUTTON1) && (transY == true) ) {
+
+                    cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(0, 0.1, 0)));
+                    panel.clear();
+                    redraw();
+                }
+                if ((cubeEdit == true) && (translationCube == true) && (e.getButton() == MouseEvent.BUTTON3) && (transY == true) ) {
+
+                    cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(0, -0.1, 0)));
+                    panel.clear();
+                    redraw();
+                }
+
+                if ((cubeEdit == true) && (translationCube == true) && (e.getButton() == MouseEvent.BUTTON1) && (transZ == true) ) {
+
+                    cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(0, 0, 0.1)));
+                    panel.clear();
+                    redraw();
+                }
+                if ((cubeEdit == true) && (translationCube == true) && (e.getButton() == MouseEvent.BUTTON3) && (transZ == true) ) {
+
+                    cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(0, 0, -0.1)));
+                    panel.clear();
+                    redraw();
+                }
+                //pyramid translace
+
+
+                if ((pyramidEdit == true) && (translationPyramid == true) && (e.getButton() == MouseEvent.BUTTON1) && (tranX == true) ) {
+
+                    pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4Transl(0.1, 0, 0)));
+                    panel.clear();
+                    redraw();
+                }
+                if ((pyramidEdit == true) && (translationPyramid == true) && (e.getButton() == MouseEvent.BUTTON3)&& (tranX == true)) {
+
+                    pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4Transl(-0.1, 0, 0)));
+                    panel.clear();
+                    redraw();
+                }
+
+
+                if ((pyramidEdit == true) && (translationPyramid == true) && (e.getButton() == MouseEvent.BUTTON1) && (transY == true) ) {
+
+                    pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4Transl(0, 0.1, 0)));
+                    panel.clear();
+                    redraw();
+                }
+                if ((pyramidEdit == true) && (translationPyramid == true) && (e.getButton() == MouseEvent.BUTTON3) && (transY == true) ) {
+
+                    pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4Transl(0, -0.1, 0)));
+                    panel.clear();
+                    redraw();
+                }
+
+                if ((pyramidEdit == true) && (translationPyramid == true) && (e.getButton() == MouseEvent.BUTTON1) && (transZ == true) ) {
+
+                    pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4Transl(0, 0, 0.1)));
+                    panel.clear();
+                    redraw();
+                }
+                if ((pyramidEdit == true) && (translationPyramid == true) && (e.getButton() == MouseEvent.BUTTON3) && (transZ == true) ) {
+
+                    pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4Transl(0, 0, -0.1)));
+                    panel.clear();
+                    redraw();
+                }
+
+
+
+
+                //triangle rotation
+
+
+                if ((triangleEdit == true) && (rotationTriangle == true) && (e.getButton() == MouseEvent.BUTTON1) && (tranX == true) ) {
+                    {
+                        triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotX(0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+
+                if ((triangleEdit == true) && (rotationTriangle == true) && (e.getButton() == MouseEvent.BUTTON1) && (transY == true) ) {
+                    {
+                        triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotY(0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+                if ((triangleEdit == true) && (rotationTriangle == true) && (e.getButton() == MouseEvent.BUTTON1) && (transZ == true) ) {
+                    {
+                        triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotZ(0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+                if ((triangleEdit == true) && (rotationTriangle == true) && (e.getButton() == MouseEvent.BUTTON3) && (tranX == true) ) {
+                    {
+                        triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotX(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+                if ((triangleEdit == true) && (rotationTriangle == true) && (e.getButton() == MouseEvent.BUTTON3) && (transY == true) ) {
+                    {
+                        triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotY(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+                if ((triangleEdit== true) && (rotationTriangle== true) && (e.getButton() == MouseEvent.BUTTON3) && (transZ == true) ) {
+                    {
+                        triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotZ(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+                //cube rotation
+
+                if ((cubeEdit == true) && (rotationCube == true) && (e.getButton() == MouseEvent.BUTTON1) && (tranX == true) ) {
+                    {
+                    cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotX(0.1)));
+                        panel.clear();
+                        redraw();
+                }
+                }
+
+
+
+                if ((cubeEdit == true) && (rotationCube == true) && (e.getButton() == MouseEvent.BUTTON1) && (transY == true) ) {
+                    {
+                        cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotY(0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+                if ((cubeEdit == true) && (rotationCube == true) && (e.getButton() == MouseEvent.BUTTON1) && (transZ == true) ) {
+                    {
+                        cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotZ(0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+                if ((cubeEdit == true) && (rotationCube == true) && (e.getButton() == MouseEvent.BUTTON3) && (tranX == true) ) {
+                    {
+                        cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotX(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+                if ((cubeEdit == true) && (rotationCube == true) && (e.getButton() == MouseEvent.BUTTON3) && (transY == true) ) {
+                    {
+                        cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotY(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+                if ((cubeEdit == true) && (rotationCube == true) && (e.getButton() == MouseEvent.BUTTON3) && (transZ == true) ) {
+                    {
+                        cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotZ(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+                //pyramid rotation
+
+
+                if ((pyramidEdit== true) && (rotationPyramid == true) && (e.getButton() == MouseEvent.BUTTON1) && (tranX == true) ) {
+                    {
+                        pyramid.setModelmatrix( pyramid.getModelMatrix().mul(new Mat4RotX(0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+
+                if ((pyramidEdit== true) && (rotationPyramid == true) && (e.getButton() == MouseEvent.BUTTON1) && (transY == true) ) {
+                    {
+                        pyramid.setModelmatrix( pyramid.getModelMatrix().mul(new Mat4RotY(0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+                if((pyramidEdit== true) && (rotationPyramid == true) && (e.getButton() == MouseEvent.BUTTON1) && (transZ == true) ) {
+                    {
+                        pyramid.setModelmatrix( pyramid.getModelMatrix().mul(new Mat4RotZ(0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+                if ((pyramidEdit== true) && (rotationPyramid == true) && (e.getButton() == MouseEvent.BUTTON3) && (tranX == true) ) {
+                    {
+                        pyramid.setModelmatrix( pyramid.getModelMatrix().mul(new Mat4RotX(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+                if  ((pyramidEdit== true) && (rotationPyramid == true) && (e.getButton() == MouseEvent.BUTTON3) && (transY == true) ) {
+                    {
+                        pyramid.setModelmatrix( pyramid.getModelMatrix().mul(new Mat4RotY(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+                if  ((pyramidEdit== true) && (rotationPyramid == true) && (e.getButton() == MouseEvent.BUTTON3) && (transZ == true) ) {
+                    {
+                        pyramid.setModelmatrix( pyramid.getModelMatrix().mul(new Mat4RotZ(-0.1)));
+                        panel.clear();
+                        redraw();
+                    }
+                }
+
+
+
+                //triangle transla
+
+
+                if ((triangleEdit == true) && (translationTriangle == true) && (e.getButton() == MouseEvent.BUTTON1) && (tranX == true) ) {
+
+                    triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4Transl(0.1, 0, 0)));
+                    panel.clear();
+                    redraw();
+                }
+                if ((triangleEdit == true) && (translationTriangle == true) && (e.getButton() == MouseEvent.BUTTON3)&& (tranX == true)) {
+
+                    triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4Transl(-0.1, 0, 0)));
+                    panel.clear();
+                    redraw();
+                }
+
+
+                if ((triangleEdit == true) && (translationTriangle == true) && (e.getButton() == MouseEvent.BUTTON1) && (transY == true) ) {
+
+                    triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4Transl(0, 0.1, 0)));
+                    panel.clear();
+                    redraw();
+                }
+                if ((triangleEdit == true) && (translationTriangle == true) && (e.getButton() == MouseEvent.BUTTON3) && (transY == true) ) {
+
+                    triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4Transl(0, -0.1, 0)));
+                    panel.clear();
+                    redraw();
+                }
+
+                if ((triangleEdit == true) && (translationTriangle== true) && (e.getButton() == MouseEvent.BUTTON1) && (transZ == true) ) {
+
+                    triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4Transl(0, 0, 0.1)));
+                    panel.clear();
+                    redraw();
+                }
+                if ((triangleEdit == true) && (translationTriangle == true) && (e.getButton() == MouseEvent.BUTTON3) && (transZ == true) ) {
+
+                    triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4Transl(0, 0, -0.1)));
+                    panel.clear();
+                    redraw();
+                }
+
+
+
+
+
+            }
+        });
+
+        panel.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                if(e.getWheelRotation() == -1) {
+
+                    camera = camera.forward(camStep);
+                    panel.clear();
+                    redraw();
+                }
+
+                if(e.getWheelRotation() == 1) {
+
+                    camera = camera.backward(camStep);
+                    panel.clear();
+                    redraw();
+                }
             }
         });
 
@@ -103,6 +436,7 @@ public class Controller3D implements Controller {
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
+
             }
         });
 
@@ -140,43 +474,14 @@ public class Controller3D implements Controller {
                                 0.1,
                                 30);
                         break;
-                    case KeyEvent.VK_X:
-                        if (cubeEdit == true) {
-                            cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotX(0.1)));
-                        }
-                        if (triangleEdit == true) {
-                            triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotX(0.1)));
-                        }
-                        if (pyramidEdit == true) {
-                            pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4RotX(0.1)));
-                        }
-                        break;
-                    case KeyEvent.VK_Y:
-                        if (cubeEdit == true) {
-                            cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotY(0.1)));
-                        }
-                        if (triangleEdit == true) {
-                            triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotY(0.1)));
-                        }
-                        if (pyramidEdit == true) {
-                            pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4RotY(0.1)));
-                        }
-                        break;
-                    case KeyEvent.VK_Z:
-                        if (cubeEdit == true) {
-                            cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4RotZ(0.1)));
-                        }
-                        if (triangleEdit == true) {
-                            triangle.setModelmatrix(triangle.getModelMatrix().mul(new Mat4RotZ(0.1)));
-                        }
-                        if (pyramidEdit == true) {
-                            pyramid.setModelmatrix(pyramid.getModelMatrix().mul(new Mat4RotZ(0.1)));
-                        }
-                        break;
-                    case KeyEvent.VK_T:
-                        if (cubeEdit == true) {
-                            cube2.setModelmatrix(cube2.getModelMatrix().mul(new Mat4Transl(0.1, 0, 0)));
-                        }
+
+
+                    case KeyEvent.VK_M:
+
+
+                        panel.clear();
+                        redraw();
+
                         break;
                     case KeyEvent.VK_N:
                                  {
@@ -285,8 +590,9 @@ public class Controller3D implements Controller {
         redraw3D();
         panel.repaint();
     }
-
+private int trans = 0;
     private void redraw3D() {
+
 
         triangleRasterizer.getzBuffer().getDbuffer().clear();
 
@@ -299,6 +605,8 @@ public class Controller3D implements Controller {
         renderer.render(arrowZ);
         renderer.render(arrowY);
         renderer.render(axesX);
+
+        //listener pro výběr aktivních těles a dalších editačních postupů
         panel.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -306,28 +614,256 @@ public class Controller3D implements Controller {
                  cubeEdit = true;
                  pyramidEdit = false;
                  triangleEdit = false;
+                 System.out.println("Aktivní těleso pro výběr zvoleno Cube");
                 }
+
+
 
                 if(e.getKeyChar() == 'k'){
                     triangleEdit = true;
                     pyramidEdit = false;
                     cubeEdit = false;
+                    System.out.println("Aktivní těleso pro výběr zvoleno Trojúhelník");
                 }
                 if(e.getKeyChar() == 'h'){
                     pyramidEdit = true;
                     triangleEdit = false;
                     cubeEdit = false;
+                    System.out.println("Aktivní těleso pro výběr zvoleno Pyramida");
 
+                }
+                if(pyramidEdit == true)
+                { if(e.getKeyChar() == 't') {
+                    translationCube = false;
+                    cubeEdit = false;
+                    translationPyramid = true;
+                    System.out.println("Zvolena translace pro daný aktivní těleso.");
+
+
+                }
+                }
+
+
+                if(triangleEdit == true)
+                { if(e.getKeyChar() == 't') {
+                    translationCube = false;
+                    cubeEdit = false;
+                    translationPyramid = false;
+                    translationTriangle = true;
+                    System.out.println("Zvolena translace pro daný aktivní těleso.");
+
+                }
+                }
+                if(pyramidEdit == true)
+                { if(e.getKeyChar() == 'r') {
+                    translationCube = false;
+                    cubeEdit = false;
+                    translationPyramid =false;
+                    rotationPyramid = true;
+                    System.out.println("Zvolena rotace pro daný aktivní těleso.");
+
+                }
+                }
+
+
+                if(triangleEdit == true)
+                { if(e.getKeyChar() == 'r') {
+                    translationCube = false;
+                    cubeEdit = false;
+                    translationPyramid =false;
+                    rotationPyramid =false;
+                    rotationTriangle = true;
+                    System.out.println("Zvolena rotace pro daný aktivní těleso.");
+
+                }
+                }
+
+                if(rotationTriangle == true){
+                    if(e.getKeyChar() == 'x') {
+                        tranX = true;
+                        transY = false;
+                        transZ = false;
+                        System.out.println("Zvolena osa X.");
+                    }
+                }
+                if(rotationTriangle == true){
+                    if(e.getKeyChar() == 'y') {
+                        tranX = false;
+                        transY = true;
+                        transZ = false;
+                        System.out.println("Zvolena osa Y.");
+                    }
+                }
+
+                if(rotationTriangle == true){
+                    if(e.getKeyChar() == 'z') {
+                        tranX = false;
+                        transY = false;
+                        transZ = true;
+                        System.out.println("Zvolena osa Z.");
+                    }
+                }
+
+
+                if(rotationPyramid == true){
+                    if(e.getKeyChar() == 'x') {
+                        tranX = true;
+                        transY = false;
+                        transZ = false;
+                        System.out.println("Zvolena osa X.");
+                    }
+                }
+                if(rotationPyramid == true){
+                    if(e.getKeyChar() == 'y') {
+                        tranX = false;
+                        transY = true;
+                        transZ = false;
+                        System.out.println("Zvolena osa Y.");
+                    }
+                }
+
+                if(rotationPyramid == true){
+                    if(e.getKeyChar() == 'z') {
+                        tranX = false;
+                        transY = false;
+                        transZ = true;
+                        System.out.println("Zvolena osa Z.");
+                    }
+                }
+
+
+                if(translationPyramid == true){
+                    if(e.getKeyChar() == 'x') {
+                        tranX = true;
+                        transY = false;
+                        transZ = false;
+                        System.out.println("Zvolena osa X.");
+                    }
+                }
+                if(translationPyramid == true){
+                    if(e.getKeyChar() == 'y') {
+                        tranX = false;
+                        transY = true;
+                        transZ = false;
+                        System.out.println("Zvolena osa Y.");
+                    }
+                }
+
+                if(translationPyramid== true){
+                    if(e.getKeyChar() == 'z') {
+                        tranX = false;
+                        transY = false;
+                        transZ = true;
+                        System.out.println("Zvolena osa Z.");
+                    }
+                }
+
+                if(cubeEdit == true)
+                { if(e.getKeyChar() == 't') {
+                    translationCube = true;
+                    translationPyramid = false;
+                    translationTriangle = false;
+                    System.out.println("Zvolena translace pro daný aktivní těleso.");
+                }
+                }
+
+                if(translationCube == true){
+                    if(e.getKeyChar() == 'x') {
+                        tranX = true;
+                        transY = false;
+                        transZ = false;
+                        System.out.println("Zvolena osa X.");
+                    }
+                }
+                if(translationCube == true){
+                    if(e.getKeyChar() == 'y') {
+                        tranX = false;
+                        transY = true;
+                        transZ = false;
+                        System.out.println("Zvolena osa Y.");
+                    }
+                }
+
+                if(translationCube == true){
+                    if(e.getKeyChar() == 'z') {
+                        tranX = false;
+                        transY = false;
+                        transZ = true;
+                        System.out.println("Zvolena osa Z.");
+                    }
+                }
+
+                if(cubeEdit == true)
+                { if(e.getKeyChar() == 'r') {
+                    translationCube = false;
+                    translationPyramid = false;
+                    rotationCube = true;
+                    System.out.println("Zvolena rotace pro daný aktivní těleso.");
+                }
+                }
+
+                if(rotationCube == true){
+                    if(e.getKeyChar() == 'x') {
+                        tranX = true;
+                        transY = false;
+                        transZ = false;
+                        System.out.println("Zvolena osa X.");
+                    }
+                }
+                if(rotationCube == true){
+                    if(e.getKeyChar() == 'y') {
+                        tranX = false;
+                        transY = true;
+                        transZ = false;
+                        System.out.println("Zvolena osa Y.");
+                    }
+                }
+
+                if(rotationCube == true){
+                    if(e.getKeyChar() == 'z') {
+                        tranX = false;
+                        transY = false;
+                        transZ = true;
+                        System.out.println("Zvolena osa Z.");
+                    }
+                }
+
+
+                if(translationTriangle == true){
+                    if(e.getKeyChar() == 'x') {
+                        tranX = true;
+                        transY = false;
+                        transZ = false;
+                        System.out.println("Zvolena osa X.");
+                    }
+                }
+                if(translationTriangle == true){
+                    if(e.getKeyChar() == 'y') {
+                        tranX = false;
+                        transY = true;
+                        transZ = false;
+                        System.out.println("Zvolena osa Y.");
+                    }
+                }
+
+                if(translationTriangle == true){
+                    if(e.getKeyChar() == 'z') {
+                        tranX = false;
+                        transY = false;
+                        transZ = true;
+                        System.out.println("Zvolena osa Z.");
+                    }
                 }
 
             }
         });
 
+        //rendering daného objketu, volání metody
        renderer.render(pyramid);
-        renderer.render(triangle);
-        //
+       renderer.render(triangle);
        renderer.render(cube2);
-        //renderer.render(cube);
+       renderer.render(bicubicPlate);
+
 
     }
 

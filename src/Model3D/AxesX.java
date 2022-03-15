@@ -4,7 +4,7 @@ import model.Part;
 import model.TopologyType;
 import model.Vertex;
 import transforms.Col;
-
+/*Třída s implementací index a vertex bufferu pro Axes X*/
 public class AxesX extends Solid{
 
     public AxesX(){
