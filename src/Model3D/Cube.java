@@ -6,7 +6,7 @@ import model.Vertex;
 import transforms.Col;
 import transforms.Mat4Transl;
 
-/*Třída s implementací index a vertex bufferu pro Cube*/
+/*Třída s implementací index a vertex bufferu pro Cube, složen z Trojúhelníků*/
 public class Cube extends Solid{
 
     public Cube(){

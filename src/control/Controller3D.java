@@ -13,7 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import static model.TopologyType.*;
-
+/*Control třída pro popis ovládání*/
 public class Controller3D implements Controller {
 
     private final Panel panel;
@@ -46,6 +46,8 @@ public class Controller3D implements Controller {
     Mat4 projection = new Mat4Identity();
     Point2D oldPoint;
     int modeCut =0;
+
+    //vytvoření instancí objektům
     AxesY arrowY = new AxesY();
     AxesX axesX = new AxesX();
     AxesZ arrowZ = new AxesZ();
@@ -442,24 +444,26 @@ public class Controller3D implements Controller {
 
         panel.requestFocus();
         panel.requestFocusInWindow();
+        //switch a listener co se má stát po zmáčknutí klávesy
         panel.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 Mat4 model;
                 switch (e.getKeyCode()) {
-                    case KeyEvent.VK_UP:
+                    //switch pro pohyb kamerou
+                    case KeyEvent.VK_W:
                         camera = camera.forward(camStep);
                         break;
-                    case KeyEvent.VK_DOWN:
+                    case KeyEvent.VK_S:
                         camera = camera.backward(camStep);
                         break;
-                    case KeyEvent.VK_LEFT:
+                    case KeyEvent.VK_A:
                         camera = camera.left(camStep);
                         break;
-                    case KeyEvent.VK_RIGHT:
+                    case KeyEvent.VK_D:
                         camera = camera.right(camStep);
                         break;
-                    case KeyEvent.VK_D:
+                    case KeyEvent.VK_F:
                         camera = camera.down(camStep);
                         break;
                     case KeyEvent.VK_U:
@@ -483,6 +487,7 @@ public class Controller3D implements Controller {
                         redraw();
 
                         break;
+                        //klávesa pro zobrazení drátěného modelu pouze pro aktivní těleso Využit TRIANGLE WIRE
                     case KeyEvent.VK_N:
                                  {
                         if (cubeEdit == true){
@@ -505,12 +510,15 @@ public class Controller3D implements Controller {
                                      }
                         }
                         break;
+                    //klávesa pro zrušení výběru aktivního tělesa tedy i možnost rotace, translace pro dané těleso a možnsot volby drátěného modelu
                     case KeyEvent.VK_SHIFT:
                   cubeEdit = false;
                   triangleEdit = false;
                   pyramidEdit = false;
                   redraw();
                     break;
+
+                    //klávesa pro vrácení z drátěného modelu pouze pro aktivní těleso
                     case KeyEvent.VK_L:
                     {
                         if (cubeEdit == true){
@@ -537,25 +545,21 @@ public class Controller3D implements Controller {
                     cubeEdit=false;
                     redraw();
                     break;
-                    case KeyEvent.VK_A:
-                        modeCut++;
-                        if (modeCut == 3)
-                            modeCut = 0;
-                        break;
+                    //změna barvy pomocí klávesnice
                     case KeyEvent.VK_NUMPAD0:
                         shader = v -> {
-                            return new Col(0, 1.0, 0);
+                            return new Col(0, 1.0, 1);
                         };
                         break;
                     case KeyEvent.VK_NUMPAD1:
                         shader = v -> {
-                            return new Col(1.0, 0, 0);
+                            return new Col(1.0, 1, 0);
                         };
 
                         break;
                     case KeyEvent.VK_NUMPAD2:
                         shader = v -> {
-                            return new Col(0, 0, 1.0);
+                            return new Col(1, 0, 1.0);
                         };
                         break;
                     case KeyEvent.VK_NUMPAD3:

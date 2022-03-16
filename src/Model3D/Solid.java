@@ -1,5 +1,5 @@
 package Model3D;
-
+/*Třída základ solid z této třídy se dědí*/
 import model.Part;
 import model.Vertex;
 import transforms.Mat4;
@@ -14,6 +14,7 @@ public abstract class Solid {
     protected List<Part> partList = new ArrayList<>();
     Mat4 modelmatrix = new Mat4Identity();
 
+    //definování seznamů
     public List<Integer> getIndexBuffer() {
         return indexBuffer;
     }

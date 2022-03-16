@@ -1,5 +1,5 @@
 package Model3D;
-
+/*Třída scene pro vykreslení solidů*/
 import java.util.ArrayList;
 import java.util.List;
 

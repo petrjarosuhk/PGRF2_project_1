@@ -46,6 +46,7 @@ public class Renderer {
                         start += 2;
                     }
                     break;
+                    //pokud bude triangle wire jakož to drátěný model tak se použije toto
                 case TRIANGLE_WIRE:
                     start = part.getIndexStart();
                     for (int i = 0; i < part.getCount(); i++) {
@@ -61,6 +62,7 @@ public class Renderer {
                         v2 = v2.mul(trans);
                         v3 = v3.mul(trans);
 
+                        //metoda rasterizeWire pro rasterizci WireFramu daného objektu
                         triangleRasterizer.rasterizeWire(
                                     new Vertex(v1.mul(1 / v1.getOne())),
                                     new Vertex(v2.mul(1 / v2.getOne())),

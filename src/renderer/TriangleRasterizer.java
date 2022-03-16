@@ -115,6 +115,8 @@ public class TriangleRasterizer {
         p1.setPosition(newP1);
         p2.setPosition(newP2);
         p3.setPosition(newP3);
+
+        //předání bodů do LINES a následné vykreslení drátěného modelu, tedy bez vyplnění uvnitř
         trivialLine(p1, p2);
         trivialLine(p1, p3);
         trivialLine(p2, p3);
@@ -148,9 +150,33 @@ public class TriangleRasterizer {
             p2 = tmp;
         }
 
-
         //částečný ořezání
-        if (p1.getPosition().getZ() < 0) {
+        if (p1.getPosition().getZ() < 0)
+            return;
+
+        if (p2.getPosition().getZ() < 0) {
+            double t1 = 0 - p1.getPosition().getZ() / (p2.getPosition().getZ() - p1.getPosition().getZ());
+            Vertex ab = p1.mul(1 - t1).add(p2.mul(t1));
+
+            double t2 = 0 - p1.getPosition().getZ() / (p3.getPosition().getZ() - p1.getPosition().getZ());
+            Vertex ac = p1.mul(1 - t2).add(p3.mul(t2));
+
+           simpleScanlineTriangle(p1, ab, ac,1);
+            return;
+        }
+        if (p3.getPosition().getZ() < 0) {
+            double t1 = 0 - p1.getPosition().getZ() / (p3.getPosition().getZ() - p1.getPosition().getZ());
+            Vertex ac = p1.mul(1 - t1).add(p3.mul(t1));
+            double t2 = 0 - p2.getPosition().getZ() / (p3.getPosition().getZ() - p2.getPosition().getZ());
+            Vertex bc = p2.mul(1 - t2).add(p3.mul(t2));
+
+           simpleScanlineTriangle(p1, p2, bc,1);
+           simpleScanlineTriangle(p1, ac, bc,1);
+            return;
+        }
+       simpleScanlineTriangle(p1, p2, p3,1);
+
+    /*  if (p1.getPosition().getZ() < 0) {
             return;
         }
 
@@ -174,7 +200,7 @@ public class TriangleRasterizer {
 
 
         }
-        simpleScanlineTriangle(p1, p2, p3, 1);
+        simpleScanlineTriangle(p1, p2, p3, 1);*/
 
         Optional<Vertex> v1Dehomog = p1.dehomog();
         Optional<Vertex> v2Dehomog = p2.dehomog();

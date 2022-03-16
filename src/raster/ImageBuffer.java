@@ -1,5 +1,5 @@
 package raster;
-
+/*Třída pro Image buffer*/
 import transforms.Col;
 
 import java.awt.*;
