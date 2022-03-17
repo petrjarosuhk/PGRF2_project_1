@@ -45,6 +45,7 @@ public class Controller3D implements Controller {
     Renderer renderer;
     Mat4 projection = new Mat4Identity();
     Point2D oldPoint;
+
     int modeCut =0;
 
     //vytvoření instancí objektům
@@ -53,6 +54,7 @@ public class Controller3D implements Controller {
     AxesZ arrowZ = new AxesZ();
     Triangle triangle = new Triangle();
     Cube cube2 = new Cube();
+    Strip strip = new Strip();
    Pyramid pyramid = new Pyramid();
    BicubicPlate bicubicPlate = new BicubicPlate();
     Shader shader;
@@ -606,9 +608,9 @@ private int trans = 0;
         renderer.setView(camera.getViewMatrix());
 
 
-        renderer.render(arrowZ);
-        renderer.render(arrowY);
-        renderer.render(axesX);
+      renderer.render(arrowZ);
+       renderer.render(arrowY);
+       renderer.render(axesX);
 
         //listener pro výběr aktivních těles a dalších editačních postupů
         panel.addKeyListener(new KeyAdapter() {
@@ -861,13 +863,12 @@ private int trans = 0;
 
             }
         });
-
         //rendering daného objketu, volání metody
        renderer.render(pyramid);
        renderer.render(triangle);
        renderer.render(cube2);
        renderer.render(bicubicPlate);
-
+       renderer.render(strip);
 
     }
 

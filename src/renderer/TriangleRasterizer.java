@@ -100,7 +100,7 @@ public class TriangleRasterizer {
     public void rasterizeWire(Vertex p1, Vertex p2, Vertex p3) {
 
         //fast clip
-        if (fastClip(p1.getPosition()) || fastClip(p2.getPosition())) ;
+        if (fastClip(p1.getPosition()) || fastClip(p2.getPosition()) || fastClip(p3.getPosition())) ;
 
 
         //dehomogenizace
@@ -115,8 +115,6 @@ public class TriangleRasterizer {
         p1.setPosition(newP1);
         p2.setPosition(newP2);
         p3.setPosition(newP3);
-
-        //předání bodů do LINES a následné vykreslení drátěného modelu, tedy bez vyplnění uvnitř
         trivialLine(p1, p2);
         trivialLine(p1, p3);
         trivialLine(p2, p3);
@@ -125,8 +123,30 @@ public class TriangleRasterizer {
 
     //rasterizace pro tři body trojúhelník
     public void rasterize(Vertex p1, Vertex p2, Vertex p3) {
+   //takto by měl správně být clip vím to, jenom i když to tam dám tak to nefunguje nevím proč proto je to zakomentované a je tam původní řešení nevím zda je chyba ve fastclipu nebo někde jinde hledal jsem to celý den
+   //alenepřišel jsem na to
+    /*  double aw = p1.getPosition().getW();
+        double ax  = p1.getPosition().getX();
+        double bx = p2.getPosition().getX();
+        double bw = p2.getPosition().getW();
+        double cw = p3.getPosition().getW();
+        double az = p1.getPosition().getZ();
+        double ay = p1.getPosition().getY();
+        double by = p2.getPosition().getY();
+        double bz = p2.getPosition().getZ();
+        double cx = p3.getPosition().getX();
+        double cy = p3.getPosition().getY();
+        double cz = p3.getPosition().getZ();
 
+        if((ax <-aw && bx <-bw && cx < -cw) ||
+                (ax > aw && bx > bw && cx > cw) ||
+                (ay < - aw && by < - aw && cy <-aw) ||
+                (ay > aw && by >  aw && cy >aw) ||
+                (az < 0 && bz < 0 && cz < 0) ||
+                (az > aw && bz > bw && cz > cw))
+            return;
 
+*/
         //fast clip
         if (fastClip(p1.getPosition()) || fastClip(p2.getPosition()) || fastClip(p3.getPosition())) ;
 
@@ -150,33 +170,9 @@ public class TriangleRasterizer {
             p2 = tmp;
         }
 
+
         //částečný ořezání
-        if (p1.getPosition().getZ() < 0)
-            return;
-
-        if (p2.getPosition().getZ() < 0) {
-            double t1 = 0 - p1.getPosition().getZ() / (p2.getPosition().getZ() - p1.getPosition().getZ());
-            Vertex ab = p1.mul(1 - t1).add(p2.mul(t1));
-
-            double t2 = 0 - p1.getPosition().getZ() / (p3.getPosition().getZ() - p1.getPosition().getZ());
-            Vertex ac = p1.mul(1 - t2).add(p3.mul(t2));
-
-           simpleScanlineTriangle(p1, ab, ac,1);
-            return;
-        }
-        if (p3.getPosition().getZ() < 0) {
-            double t1 = 0 - p1.getPosition().getZ() / (p3.getPosition().getZ() - p1.getPosition().getZ());
-            Vertex ac = p1.mul(1 - t1).add(p3.mul(t1));
-            double t2 = 0 - p2.getPosition().getZ() / (p3.getPosition().getZ() - p2.getPosition().getZ());
-            Vertex bc = p2.mul(1 - t2).add(p3.mul(t2));
-
-           simpleScanlineTriangle(p1, p2, bc,1);
-           simpleScanlineTriangle(p1, ac, bc,1);
-            return;
-        }
-       simpleScanlineTriangle(p1, p2, p3,1);
-
-    /*  if (p1.getPosition().getZ() < 0) {
+        if (p1.getPosition().getZ() < 0) {
             return;
         }
 
@@ -200,7 +196,7 @@ public class TriangleRasterizer {
 
 
         }
-        simpleScanlineTriangle(p1, p2, p3, 1);*/
+        simpleScanlineTriangle(p1, p2, p3, 1);
 
         Optional<Vertex> v1Dehomog = p1.dehomog();
         Optional<Vertex> v2Dehomog = p2.dehomog();
@@ -237,12 +233,12 @@ public class TriangleRasterizer {
 
 
 
-     for (int y = (int)Math.max(p1.getPosition().getY()+1,0); y < Math.min(p2.getPosition().getY(), height-1); y++) {
+        for (int y = (int)Math.max(p1.getPosition().getY()+1,0); y < Math.min(p2.getPosition().getY(), height-1); y++) {
 
-           simpleScanlineTriangle(p1, p2, p3, y);
+            simpleScanlineTriangle(p1, p2, p3, y);
 
 
-      }
+        }
         for (int y = (int) Math.max(p2.getPosition().getY()+1,0); y < Math.min(p3.getPosition().getY(), height-1); y++) {
 
             simpleScanlineTriangle(p3, p2, p1, y);

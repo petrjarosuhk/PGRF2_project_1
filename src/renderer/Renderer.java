@@ -46,7 +46,33 @@ public class Renderer {
                         start += 2;
                     }
                     break;
-                    //pokud bude triangle wire jakož to drátěný model tak se použije toto
+                case TRIANGLE_STRIP:
+                    for(int i = 0; i < part.getCount() - 2; i++){
+                        int ia = part.getIndexStart() + i;
+                        int iB = part.getIndexStart() + i + 1;
+                        int iC = part.getIndexStart() + i + 2;
+
+                        int iia = solid.getIndexBuffer().get(ia);
+                        int iiB = solid.getIndexBuffer().get(iB);
+                        int iiC = solid.getIndexBuffer().get(iC);
+                        Vertex A = solid.getVertexBuffer().get(iia);
+                        Vertex b = solid.getVertexBuffer().get(iiB);
+                        Vertex c = solid.getVertexBuffer().get(iiC);
+                        Mat4 trans2 = solid.getModelMatrix().mul(viewMatrix).mul(projectionMatrix);
+                        A = A.mul(trans2);
+                        b  = b.mul(trans2);
+                        c = c.mul(trans2);
+                        triangleRasterizer.rasterize(
+                                new Vertex(A.mul(1 / A.getOne())),
+                                new Vertex(b.mul(1 / b.getOne())),
+                                new Vertex(c.mul(1 / c.getOne()))
+                        );
+
+
+                    }
+
+                    break;
+                //pokud bude triangle wire jakož to drátěný model tak se použije toto
                 case TRIANGLE_WIRE:
                     start = part.getIndexStart();
                     for (int i = 0; i < part.getCount(); i++) {
