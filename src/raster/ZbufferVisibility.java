@@ -12,6 +12,8 @@ public class ZbufferVisibility {
         this.iBuffer = iBuffer;
         this.dbuffer = new DepthBuffer(iBuffer.getWidth(), iBuffer.getHeight());
     }
+
+    //jaký pixel se zobrazí v závislosti na velikosti z
     public void drawPixelWithTest(int x, int y, double z, Col color){
         if(z< dbuffer.getElement(x,y)){
             iBuffer.setElement(x,y,color);

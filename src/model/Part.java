@@ -1,5 +1,5 @@
 package model;
-
+/*Třída pro definici partu*/
 public class Part {
     private TopologyType type;
     private int indexStart;

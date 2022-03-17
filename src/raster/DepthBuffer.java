@@ -1,5 +1,5 @@
 package raster;
-
+/*Třída pro DepthBuffer*/
 public class DepthBuffer implements Raster<Double> {
 
     private final double[][] depth;

@@ -100,7 +100,7 @@ public class TriangleRasterizer {
     public void rasterizeWire(Vertex p1, Vertex p2, Vertex p3) {
 
         //fast clip
-        if (fastClip(p1.getPosition()) || fastClip(p2.getPosition())) ;
+        if (fastClip(p1.getPosition()) || fastClip(p2.getPosition()) || fastClip(p3.getPosition())) ;
 
 
         //dehomogenizace
@@ -123,8 +123,30 @@ public class TriangleRasterizer {
 
     //rasterizace pro tři body trojúhelník
     public void rasterize(Vertex p1, Vertex p2, Vertex p3) {
+   //takto by měl správně být clip vím to, jenom i když to tam dám tak to nefunguje nevím proč proto je to zakomentované a je tam původní řešení nevím zda je chyba ve fastclipu nebo někde jinde hledal jsem to celý den
+   //alenepřišel jsem na to
+    /*  double aw = p1.getPosition().getW();
+        double ax  = p1.getPosition().getX();
+        double bx = p2.getPosition().getX();
+        double bw = p2.getPosition().getW();
+        double cw = p3.getPosition().getW();
+        double az = p1.getPosition().getZ();
+        double ay = p1.getPosition().getY();
+        double by = p2.getPosition().getY();
+        double bz = p2.getPosition().getZ();
+        double cx = p3.getPosition().getX();
+        double cy = p3.getPosition().getY();
+        double cz = p3.getPosition().getZ();
 
+        if((ax <-aw && bx <-bw && cx < -cw) ||
+                (ax > aw && bx > bw && cx > cw) ||
+                (ay < - aw && by < - aw && cy <-aw) ||
+                (ay > aw && by >  aw && cy >aw) ||
+                (az < 0 && bz < 0 && cz < 0) ||
+                (az > aw && bz > bw && cz > cw))
+            return;
 
+*/
         //fast clip
         if (fastClip(p1.getPosition()) || fastClip(p2.getPosition()) || fastClip(p3.getPosition())) ;
 
@@ -211,12 +233,12 @@ public class TriangleRasterizer {
 
 
 
-     for (int y = (int)Math.max(p1.getPosition().getY()+1,0); y < Math.min(p2.getPosition().getY(), height-1); y++) {
+        for (int y = (int)Math.max(p1.getPosition().getY()+1,0); y < Math.min(p2.getPosition().getY(), height-1); y++) {
 
-           simpleScanlineTriangle(p1, p2, p3, y);
+            simpleScanlineTriangle(p1, p2, p3, y);
 
 
-      }
+        }
         for (int y = (int) Math.max(p2.getPosition().getY()+1,0); y < Math.min(p3.getPosition().getY(), height-1); y++) {
 
             simpleScanlineTriangle(p3, p2, p1, y);

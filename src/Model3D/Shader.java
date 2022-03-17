@@ -1,5 +1,5 @@
 package Model3D;
-
+/*Funkcionální interface BONUS*/
 import model.Vertex;
 import transforms.Col;
 

@@ -1,5 +1,5 @@
 package model;
-
+/*Třída pro vertex buffer*/
 import transforms.*;
 
 import java.util.Optional;
@@ -97,6 +97,7 @@ public class Vertex {
         );
     }
 
+    //metoda pro dehomogenizaci vlastní
     public Optional<Vertex> dehomog() {
         if (position.getW() == 0.)
             return Optional.empty();
